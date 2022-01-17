@@ -1,0 +1,16 @@
+@font-face {
+	font-family: 'Fira Code';
+	src: url('../fonts/FiraCode.ttf') format('truetype');
+	src: url('../fonts/FiraCode-Medium.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Red Display';
+	src: url('../fonts/RedHatDisplay.ttf') format('truetype');
+	src: url('../fonts/RedHatDisplay-Bold.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Red Text';
+	src: url('../fonts/RedHatText.ttf') format('truetype');
+}

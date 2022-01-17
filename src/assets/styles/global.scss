@@ -1,0 +1,29 @@
+@import '~assets/styles/_variables.scss';
+@import '~assets/styles/_mixins.scss';
+
+body {
+	@include center;
+
+	overflow: hidden;
+	height: 100vh;
+	width: 100vw;
+
+	transition: background-color .3s;
+
+	font-family: $main-font;
+}
+
+* {
+	transition: all .3s;
+	transition: color .01s;
+}
+
+.light-mode body {
+	background-color: $light-background;
+	color: $light-primary;
+}
+
+.dark-mode body {
+	background-color: $dark-background;
+	color: $dark-primary;
+}

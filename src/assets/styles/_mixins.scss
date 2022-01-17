@@ -1,0 +1,33 @@
+@import '~assets/styles/_variables.scss';
+
+@mixin link {
+	a {
+		text-decoration: none;
+		transition: color 0.2s;
+
+		.light-mode &:link,
+		.light-mode &:visited {
+			color: $light-secondary;
+		}
+		.light-mode &:hover,
+		.light-mode &:focus {
+			color: $light-primary;
+		}
+
+		.dark-mode &:link,
+		.dark-mode &:visited {
+			color: $dark-secondary;
+		}
+		.dark-mode &:hover,
+		.dark-mode &:focus {
+			color: $dark-primary;
+		}
+	}
+}
+
+@mixin center {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+}
