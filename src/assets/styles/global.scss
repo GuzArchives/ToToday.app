@@ -27,3 +27,26 @@ body {
 	background-color: $dark-background;
 	color: $dark-primary;
 }
+
+/*
+? Workaround with changing elements depending on the page's theme,
+? probably there is a better way, using `v-if` and `v-else`, but apparently,
+? it's doesn't work properly when the page is loaded multiple times.
+*/
+.dark-mode-element,
+.light-mode-element {
+	transition: display, opacity 0.01s;
+}
+
+.light-mode * .dark-mode-element {
+	opacity: 0;
+	height: 0;
+	width: 0;
+	display: none;
+}
+.dark-mode * .light-mode-element {
+	opacity: 0;
+	height: 0;
+	width: 0;
+	display: none;
+}

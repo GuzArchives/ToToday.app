@@ -32,12 +32,14 @@ export default {
 		'@nuxtjs/stylelint-module',
 
 		'@nuxt/image',
+
+		'@nuxtjs/color-mode',
+		
+		'@nuxtjs/pwa'
 	],
 
 	// Modules: https://go.nuxtjs.dev/config-modules
 	modules: [
-		'@nuxtjs/color-mode',
-		'@nuxtjs/pwa'
 	],
 
 	// PWA module configuration: https://go.nuxtjs.dev/pwa

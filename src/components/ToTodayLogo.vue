@@ -1,13 +1,13 @@
 <template>
 	<picture>
 		<nuxt-img
-			v-if="$colorMode.value != 'dark'"
+			class="light-mode-element"
 			src="/images/ToToday-Dark.svg"
 			alt="ToToday logo"
 			width="250"
 		/>
 		<nuxt-img
-			v-else
+			class="dark-mode-element"
 			src="/images/ToToday-Light.svg"
 			alt="ToToday logo"
 			width="250"

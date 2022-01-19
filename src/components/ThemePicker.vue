@@ -6,8 +6,8 @@
 					$colorMode.preference === 'dark' ? 'light' : 'dark'
 			"
 		>
-			<IconMoon v-if="$colorMode.preference !== 'dark'" />
-			<IconSun v-else />
+			<IconMoon class="light-mode-element" />
+			<IconSun class="dark-mode-element" />
 		</button>
 	</div>
 </template>
