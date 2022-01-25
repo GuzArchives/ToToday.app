@@ -1,6 +1,8 @@
 <template>
 	<div class="footer">
 		<p>
+			Version: {{ version }}
+			<br />
 			<a href="http://github.com/ProjectLored/ToToday.app" target="_blank">
 				(c) 2022 Project Lored &bull; MIT License
 			</a>
@@ -10,6 +12,18 @@
 		</p>
 	</div>
 </template>
+
+<script lang="ts">
+import Vue from 'vue';
+import appInfo from '~~/package.json';
+
+export default Vue.extend({
+	name: 'PageFooter',
+	data() {
+		return {version: appInfo.version};
+	}
+});
+</script>
 
 <style scoped lang="scss">
 @import '~assets/styles/_variables.scss';
