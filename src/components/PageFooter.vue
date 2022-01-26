@@ -18,7 +18,11 @@ import Vue from 'vue';
 import appInfo from '~~/package.json';
 import sm from '~/libs/storageManagement';
 
-const storageUpdated = sm.get(true)?.date ? `- Storage Updated: ${sm.get(true).date.updated.day.readable} ${sm.get(true).date.updated.hour.readable}` : '';
+const storageUpdated = sm.get(true)?.date
+	? `- Storage Updated: ${sm.get(true).date.updated.day.readable} ${
+			sm.get(true).date.updated.hour.readable
+	  }`
+	: '';
 
 export default Vue.extend({
 	name: 'PageFooter',

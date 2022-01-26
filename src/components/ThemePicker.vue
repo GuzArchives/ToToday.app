@@ -4,7 +4,7 @@
 			@click="
 				$colorMode.preference =
 					$colorMode.preference === 'dark' ? 'light' : 'dark';
-				updateThemeInfo($colorMode.preference)
+				updateThemeInfo($colorMode.preference);
 			"
 		>
 			<IconMoon class="light-mode-element" />
@@ -19,8 +19,8 @@ import sm from '~/libs/storageManagement';
 
 export default Vue.extend({
 	methods: {
-		updateThemeInfo: (theme) => sm.set('theme', theme, false, true)
-	}
+		updateThemeInfo: (theme) => sm.set('theme', theme, false, true),
+	},
 });
 </script>
 

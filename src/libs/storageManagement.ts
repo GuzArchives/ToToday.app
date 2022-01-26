@@ -15,12 +15,11 @@ const sm = {
 	add: (key: string, value: any) => {
 		const data = sm.getJSON().data;
 
-		if ( data[key] ) return window.alert('ERROR: Value already in storage');
+		if (data[key]) return window.alert('ERROR: Value already in storage');
 
 		data[key] = value;
 
 		sm.setJSON(data);
-
 	},
 
 	/**
@@ -32,9 +31,13 @@ const sm = {
 	 *
 	 * @returns The old value of the key, if `getOld` is `true`.
 	 */
-	set: (key: string, value: any, getOld?: boolean, meta?: boolean): void | any => {
-
-		if( meta ) {
+	set: (
+		key: string,
+		value: any,
+		getOld?: boolean,
+		meta?: boolean
+	): void | any => {
+		if (meta) {
 			const metaData = sm.getJSON();
 			metaData.meta[key] = value;
 			sm.setJSON(metaData, true);
@@ -45,17 +48,17 @@ const sm = {
 
 		const oldValue = data[key];
 
-		if ( !data[key] ) return sm.add(key, value);
+		if (!data[key]) return sm.add(key, value);
 
 		data[key] = value;
 
 		sm.setJSON(data);
 
-		if ( getOld ) return oldValue;
+		if (getOld) return oldValue;
 	},
 
 	get: (meta?: boolean) => {
-		const storage = sm.getJSON()
+		const storage = sm.getJSON();
 
 		if (meta) {
 			return storage.meta;
@@ -84,19 +87,23 @@ const sm = {
 	 * **Used internally by the storage management.**
 	 */
 	setJSON: (newData: object, meta?: boolean) => {
-		if (meta)
-			localStorage.setItem(storageIndex, JSON.stringify(newData));
+		if (meta) localStorage.setItem(storageIndex, JSON.stringify(newData));
 		else {
-			const newJSON = { meta: sm.getJSON().meta, data: newData }
+			const newJSON = { meta: sm.getJSON().meta, data: newData };
 
 			localStorage.setItem(storageIndex, JSON.stringify(newJSON));
+
+			const updatedMeta = sm.getJSON().meta;
+
+			updatedMeta.date.updated = date.full();
+
+			const updatedJSON = {
+				meta: updatedMeta,
+				data: newData,
+			};
+
+			localStorage.setItem(storageIndex, JSON.stringify(updatedJSON));
 		}
-
-		const data = sm.getJSON();
-
-		data.meta.date.updated = date.full();
-
-		localStorage.setItem(storageIndex, JSON.stringify(newData));
 	},
 
 	/**
@@ -106,11 +113,14 @@ const sm = {
 	 */
 	checkJSON: () => {
 		try {
-			JSON.parse(localStorage.getItem(storageIndex)+'')
+			JSON.parse(localStorage.getItem(storageIndex) + '');
 		} catch (error) {
 			sm.createJSON(true);
 		}
-		if (!localStorage.getItem(storageIndex) || !JSON.parse(localStorage.getItem(storageIndex)+'').meta)
+		if (
+			!localStorage.getItem(storageIndex) ||
+			!JSON.parse(localStorage.getItem(storageIndex) + '').meta
+		)
 			sm.createJSON(true);
 	},
 
