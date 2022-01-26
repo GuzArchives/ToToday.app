@@ -23,7 +23,7 @@ const date = {
 		const d = new Date();
 
 		return {
-			readable: `${d.getHours()}:${d.getMinutes()}`,
+			readable: `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`,
 			hours: d.getHours(),
 			minutes: d.getMinutes(),
 			seconds: d.getSeconds(),
