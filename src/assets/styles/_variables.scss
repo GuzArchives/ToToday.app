@@ -1,12 +1,13 @@
 @import '~assets/styles/fonts.css';
+@import '~assets/styles/_colors.scss';
 
-$light-background: #fff;
-$light-primary: #000;
-$light-secondary: #afafaf;
+$light-background: $azure-white;
+$light-primary: $eerie-black0;
+$light-secondary: $independence-gray1;
 
-$dark-background: #181b23;
-$dark-primary: #eaf3f2;
-$dark-secondary: #697699;
+$dark-background: $eerie-black1;
+$dark-primary: $azure-white;
+$dark-secondary: $eerie-black3;
 
 $main-font: 'Red Display', arial, helvetica, sans-serif;
 $secondary-font: 'Fira Code', monospace, sans-serif;
