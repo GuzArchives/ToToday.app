@@ -21,11 +21,17 @@ body {
 .light-mode body {
 	background-color: $light-background;
 	color: $light-primary;
+	* {
+		stroke: $light-secondary;
+	}
 }
 
 .dark-mode body {
 	background-color: $dark-background;
 	color: $dark-primary;
+	* {
+		stroke: $dark-secondary;
+	}
 }
 
 /*

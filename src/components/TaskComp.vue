@@ -1,21 +1,34 @@
 <template>
-	<li :id="id" class="task">
-		<label class="checkbox" :for="`checkboxInput${id}`">
-			<input :id="`checkboxInput${id}`" type="checkbox" />
-			<div class="icons animate">
-				<IconChecked class="checkedIcon" />
-				<IconUnchecked class="uncheckedIcon" />
+	<li :id="`task${id}`" :class="`${newTask ? 'newTask ' : ''}task`">
+		<div class="taskInfo">
+			<label
+				class="checkbox"
+				:for="`checkboxInput${id}`"
+				@click="changeState()"
+			>
+				<input :id="`checkboxInput${id}`" type="checkbox" :checked="checked" />
+				<div class="icons animate">
+					<IconChecked class="checkedIcon" />
+					<IconUnchecked class="uncheckedIcon" />
+				</div>
+			</label>
+			<div class="info">
+				<h1>{{ title }}</h1>
+				<p>{{ description }}</p>
 			</div>
-		</label>
-		<div class="info">
-			<h1>{{ title }}</h1>
-			<p>{{ description }}</p>
 		</div>
+		<nav class="controls">
+			<button class="deleteButton" @click="deleteTask()">
+				<IconTrash class="trashIcon" />
+			</button>
+		</nav>
 	</li>
 </template>
 
-<script lang="ts">
+<script lang="js">
 import Vue from 'vue';
+import sm from '~/libs/storageManagement';
+
 export default Vue.extend({
 	name: 'TaskComp',
 	props: {
@@ -31,7 +44,28 @@ export default Vue.extend({
 			type: String,
 			default: 'Task short description',
 		},
+		checked: {
+			type: Boolean,
+			default: false,
+		},
+		newTask: {
+			type: Boolean,
+			default: false,
+		}
 	},
+	methods: {
+		changeState() {
+			const state = document.querySelector(`input#checkboxInput${this.id}`)?.checked;
+			const tasks = sm.get('tasks');
+			tasks[this.id].checked = state;
+			sm.set('tasks', tasks);
+		},
+		deleteTask() {
+			const localTasks = sm.get('tasks');
+			localTasks.splice(this.id, 1);
+			sm.set('tasks', localTasks);
+		}
+	}
 });
 </script>
 
@@ -41,6 +75,16 @@ export default Vue.extend({
 
 $checked-color: $green0;
 $unchecked-color: $begonia-red0;
+
+.newTask {
+	animation-delay: 0s !important;
+}
+
+@for $i from 1 through 100 {
+	.task#task#{$i} {
+		animation-delay: #{$i * 0.2}s;
+	}
+}
 
 .task {
 	.light-mode & {
@@ -52,151 +96,203 @@ $unchecked-color: $begonia-red0;
 		color: $dark-primary;
 	}
 
-	display: flex;
-	text-align: left;
-	align-items: center;
-
 	border-radius: 20px;
 	margin-top: 5%;
 	padding: 10px;
 
-	.checkbox {
-		padding: 1%;
-		padding-right: 2%;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding-right: 5%;
 
-		input {
-			display: none;
+	opacity: 0;
+	transform: translateY(50%);
+
+	animation: enter 0.5s ease-out;
+	animation-fill-mode: forwards;
+
+	@keyframes enter {
+		from {
+			opacity: 0;
+			transform: translateY(50%);
 		}
-		input[type='checkbox']:checked + .icons {
-			animation: iconAnim 1s;
-			.checkedIcon {
-				display: inline-block;
-			}
-			.uncheckedIcon {
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	.taskInfo {
+		display: flex;
+		text-align: left;
+		align-items: center;
+		width: 100%;
+
+		.checkbox {
+			padding: 1%;
+			padding-right: 2%;
+
+			input {
 				display: none;
 			}
-
-			.checkedIcon *,
-			.uncheckedIcon * {
-				.light-mode & {
-					@include colorFadeAnim(
-						$unchecked-color,
-						$checked-color,
-						1s,
-						'checkLight'
-					);
-					stroke: $checked-color;
+			input[type='checkbox']:checked + .icons {
+				animation: iconAnim 1s;
+				.checkedIcon {
+					display: inline-block;
 				}
-				.dark-mode & {
-					@include colorFadeAnim(
-						$unchecked-color,
-						$checked-color,
-						1s,
-						'checkDark'
-					);
-					stroke: $checked-color;
+				.uncheckedIcon {
+					display: none;
+				}
+
+				.checkedIcon *,
+				.uncheckedIcon * {
+					.light-mode & {
+						@include colorFadeAnim(
+							$unchecked-color,
+							$checked-color,
+							1s,
+							'checkLight'
+						);
+						stroke: $checked-color;
+					}
+					.dark-mode & {
+						@include colorFadeAnim(
+							$unchecked-color,
+							$checked-color,
+							1s,
+							'checkDark'
+						);
+						stroke: $checked-color;
+					}
+				}
+			}
+			input[type='checkbox']:not(:checked) + .icons {
+				animation: iconAnimReverse 1s;
+				.checkedIcon {
+					display: none;
+				}
+				.uncheckedIcon {
+					display: inline-block;
+				}
+
+				.checkedIcon *,
+				.uncheckedIcon * {
+					.light-mode & {
+						@include colorFadeAnim(
+							$checked-color,
+							$unchecked-color,
+							1s,
+							'uncheckLight'
+						);
+						stroke: $unchecked-color;
+					}
+					.dark-mode & {
+						@include colorFadeAnim(
+							$checked-color,
+							$unchecked-color,
+							1s,
+							'uncheckDark'
+						);
+						stroke: $unchecked-color;
+					}
+				}
+			}
+			.icons {
+				@include center;
+				$bg-color: #00000080;
+
+				background-color: $bg-color;
+
+				margin: 2px;
+				padding: 2px;
+				border-radius: 50%;
+
+				.checkedIcon *,
+				.uncheckedIcon * {
+					.light-mode & {
+						stroke: $unchecked-color;
+					}
+					.dark-mode & {
+						stroke: $unchecked-color;
+					}
+				}
+			}
+
+			@keyframes iconAnim {
+				from {
+					transform: rotate(0) scale(1);
+				}
+				5% {
+					transform: rotate(0) scale(0.7);
+				}
+				50% {
+					transform: rotate(360deg) scale(1.2);
+				}
+				90% {
+					transform: scale(1.2);
+				}
+				to {
+					transform: scale(1);
+				}
+			}
+
+			@keyframes iconAnimReverse {
+				from {
+					transform: rotate(0) scale(1);
+				}
+				5% {
+					transform: rotate(0) scale(0.7);
+				}
+				50% {
+					transform: rotate(-360deg) scale(1);
+				}
+				to {
+					transform: rotate(-360deg) scale(1);
 				}
 			}
 		}
-		input[type='checkbox']:not(:checked) + .icons {
-			animation: iconAnimReverse 1s;
-			.checkedIcon {
-				display: none;
-			}
-			.uncheckedIcon {
-				display: inline-block;
+
+		.info {
+			display: inline-block;
+
+			h1 {
+				font-size: 1.2em;
+				margin: 0;
 			}
 
-			.checkedIcon *,
-			.uncheckedIcon * {
-				.light-mode & {
-					@include colorFadeAnim(
-						$checked-color,
-						$unchecked-color,
-						1s,
-						'uncheckLight'
-					);
-					stroke: $unchecked-color;
-				}
-				.dark-mode & {
-					@include colorFadeAnim(
-						$checked-color,
-						$unchecked-color,
-						1s,
-						'uncheckDark'
-					);
-					stroke: $unchecked-color;
-				}
-			}
-		}
-		.icons {
-			@include center;
-			$bg-color: #00000080;
-
-			background-color: $bg-color;
-
-			margin: 2px;
-			padding: 2px;
-			border-radius: 50%;
-
-			.checkedIcon *,
-			.uncheckedIcon * {
-				.light-mode & {
-					stroke: $unchecked-color;
-				}
-				.dark-mode & {
-					stroke: $unchecked-color;
-				}
-			}
-		}
-
-		@keyframes iconAnim {
-			from {
-				transform: rotate(0) scale(1);
-			}
-			5% {
-				transform: rotate(0) scale(0.7);
-			}
-			50% {
-				transform: rotate(360deg) scale(1.2);
-			}
-			90% {
-				transform: scale(1.2);
-			}
-			to {
-				transform: scale(1);
-			}
-		}
-
-		@keyframes iconAnimReverse {
-			from {
-				transform: rotate(0) scale(1);
-			}
-			5% {
-				transform: rotate(0) scale(0.7);
-			}
-			50% {
-				transform: rotate(-360deg) scale(1);
-			}
-			to {
-				transform: rotate(-360deg) scale(1);
+			p {
+				font-family: $secondary-font;
+				font-size: 0.8em;
+				margin: 0;
 			}
 		}
 	}
 
-	.info {
-		display: inline-block;
+	.controls {
+		opacity: 0;
+		@media (pointer: none), (pointer: coarse) {
+			opacity: 0.5;
+		}
+		transition: opacity 0.2s;
 
-		h1 {
-			font-size: 1.2em;
-			margin: 0;
+		button {
+			background-color: transparent;
+			padding: 1px;
+			border: 0;
+			cursor: pointer;
 		}
 
-		p {
-			font-family: $secondary-font;
-			font-size: 0.8em;
-			margin: 0;
+		.trashIcon {
+			* {
+				transition: stroke 0.2s;
+			}
+			&:hover * {
+				stroke: $unchecked-color;
+			}
 		}
+	}
+	&:hover .controls {
+		opacity: 1;
 	}
 }
 </style>
