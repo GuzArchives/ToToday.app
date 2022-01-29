@@ -1,5 +1,6 @@
 import appInfo from '~~/package.json';
 import date from '~/libs/date';
+import obj from '~/libs/utils';
 
 const storageIndex = 'ToToday-storage';
 
@@ -9,64 +10,93 @@ const storageIndex = 'ToToday-storage';
 const sm = {
 	/**
 	 * Adds new value on `data`. *Don't create or rewrite the value if it already exists.*
-	 * @param {string} key New key on `data`;
+	 * @param {string} path New value's path on `data`;
 	 * @param {any} value New value;
 	 */
-	add: (key: string, value: any) => {
-		const data = sm.getJSON().data;
+	add: (path: string, value: any) => {
 
-		if (data[key]) return window.alert('ERROR: Value already in storage');
+		let data = sm.getJSON().data;
 
-		data[key] = value;
+
+		if (obj.getByString(data, `data.${path}`))
+			return window.alert('ERROR: Value already in storage');
+
+		data = obj.setByString(data, value, path);
 
 		sm.setJSON(data);
 	},
 
 	/**
-	 * Rewrite a value inside of `data` with a new *(creates a new key/value if it's doesn't exist before)*.
-	 * @param {string} key Value's key on `data`;
+	 * Rewrite a value inside of `data` with a new *(creates a new path/value if it's doesn't exist before)*.
+	 * @param {string} path Value's path on `data`;
 	 * @param {any} value The new value to replace;
-	 * @param {boolean | undefined} getOld Return the old value of the key?
+	 * @param {boolean | undefined} getOld Return the old value of the path?
 	 * @param {boolean | undefined} meta Update a value on `meta`?
 	 *
-	 * @returns The old value of the key, if `getOld` is `true`.
+	 * @returns The old value of the path, if `getOld` is `true`.
 	 */
 	set: (
-		key: string,
+		path: string,
 		value: any,
 		getOld?: boolean,
 		meta?: boolean
 	): void | any => {
 		if (meta) {
-			const metaData = sm.getJSON();
-			metaData.meta[key] = value;
+			let metaData = sm.getJSON();
+			metaData = obj.setByString(metaData, undefined, path);
 			sm.setJSON(metaData, true);
 			return;
 		}
 
-		const data = sm.getJSON().data;
+		let data = sm.getJSON().data;
 
-		const oldValue = data[key];
+		if (obj.getByString(data, path)) return sm.add(path, value);
 
-		if (!data[key]) return sm.add(key, value);
+		const oldValue = obj.getByString(data, path);
 
-		data[key] = value;
+		data = obj.setByString(data, value, path);
 
 		sm.setJSON(data);
 
 		if (getOld) return oldValue;
 	},
 
-	get: (meta?: boolean) => {
+	/**
+	 * Gets a value from localStorage*.
+	 * @param {string} path Value's path on `data`;
+	 * @param {boolean | undefined} meta Update a value on `meta`?
+	 *
+	 * @returns {any | undefined} Value on localStorage (or undefined if no value wasn't found).
+	 */
+	get: (path: string, meta?: boolean): any | undefined => {
 		const storage = sm.getJSON();
 
-		if (meta) {
-			return storage.meta;
-		}
+		if (meta && path) return obj.getByString(storage, `meta.${path}`);
+		else if (meta) return storage.meta;
 
-		if (storage.data) return storage.data;
+		if (path && obj.getByString(storage, `data.${path}`) !== undefined)
+			return obj.getByString(storage, `data.${path}`);
 
 		return undefined;
+	},
+
+	/**
+	 * Removes a value from localStorage's data
+	 * @param {string} path Value's path on `data`;
+	 * @param {boolean | undefined} getOld Return the old value of the path?
+	 *
+	 * @returns The old value of the path, if `getOld` is `true`.
+	 */
+	remove: (path: string, getOld?: boolean): void | any => {
+		let data = sm.getJSON().data;
+
+		const oldValue = obj.getByString(data, path);
+
+		data = obj.setByString(data, undefined, path);
+
+		sm.setJSON(data);
+
+		if (getOld) return oldValue;
 	},
 
 	/**
@@ -104,6 +134,7 @@ const sm = {
 
 			localStorage.setItem(storageIndex, JSON.stringify(updatedJSON));
 		}
+		window.dispatchEvent(new CustomEvent('localStorage-changed'));
 	},
 
 	/**
@@ -120,6 +151,12 @@ const sm = {
 		if (
 			!localStorage.getItem(storageIndex) ||
 			!JSON.parse(localStorage.getItem(storageIndex) + '').meta
+		)
+			sm.createJSON(true);
+
+		if (
+			!localStorage.getItem(storageIndex) ||
+			!JSON.parse(localStorage.getItem(storageIndex) + '').data
 		)
 			sm.createJSON(true);
 	},
