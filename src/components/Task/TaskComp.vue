@@ -28,6 +28,14 @@
 						<p>{{ description }}</p>
 					</div>
 				</div>
+				<button
+					:class="`${
+						openSubTasks ? 'openedSubtasksButton' : 'closedSubtasksButton'
+					} subtasksButton`"
+					@click="openSubTasks = !openSubTasks"
+				>
+					<IconDropdown class="dropdownIcon" />
+				</button>
 			</div>
 			<nav class="controls">
 				<button class="deleteButton" @click="deleteTask()">
@@ -35,6 +43,7 @@
 				</button>
 			</nav>
 		</div>
+		<SubTaskList :parent="id" :opened="openSubTasks" />
 	</li>
 </template>
 
@@ -340,6 +349,49 @@ export default Vue.extend({
 				}
 			}
 
+			.subtasksButton {
+				display: flex;
+				align-items: center;
+
+				opacity: 0;
+				@media (pointer: none), (pointer: coarse) {
+					opacity: 0.5;
+				}
+				transition: opacity 0.2s;
+
+				background-color: transparent;
+				padding: 1px;
+				border: 0;
+				cursor: pointer;
+
+				.dropdownIcon {
+					* {
+						transition: stroke 0.2s;
+					}
+					&:hover * {
+						.light-mode & {
+							stroke: $independence-gray0;
+						}
+						.dark-mode & {
+							stroke: $dark-primary;
+						}
+					}
+				}
+
+				&.openedSubtasksButton {
+					.dropdownIcon {
+						transform: rotate(180deg);
+					}
+				}
+				&.closedSubtasksButton {
+					.dropdownIcon {
+						transform: rotate(0deg);
+					}
+				}
+			}
+			&:hover .subtasksButton {
+				opacity: 1;
+			}
 		}
 	}
 }
