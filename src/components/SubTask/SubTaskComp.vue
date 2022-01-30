@@ -2,7 +2,7 @@
 	<li :id="`subTask${id}`" class="subTask">
 		<div class="subTaskInfo">
 			<input
-				:id="`subTaskCheckboxInput${id}`"
+				:id="`subTaskCheckboxInput${id}-p${parent}`"
 				type="checkbox"
 				name=""
 				class="checkbox"
@@ -46,12 +46,12 @@ export default Vue.extend({
 	methods: {
 		changeState(parentId: number) {
 			const element = document.querySelector(
-				`input#checkboxInput${this.id}`
+				`input#subTaskCheckboxInput${this.id}-p${this.parent}`
 			) as HTMLInputElement;
 
 			const localTasks: Task[] = sm.get('tasks');
 
-			localTasks[parentId].subTasks[this.id].checked = element?.checked;
+			localTasks[parentId].subTasks[this.id].checked = element.checked;
 
 			sm.set('tasks', localTasks);
 		},
