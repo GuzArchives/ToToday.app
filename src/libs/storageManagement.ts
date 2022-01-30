@@ -14,9 +14,7 @@ const sm = {
 	 * @param {any} value New value;
 	 */
 	add: (path: string, value: any) => {
-
 		let data = sm.getJSON().data;
-
 
 		if (obj.getByString(data, `data.${path}`))
 			return window.alert('ERROR: Value already in storage');

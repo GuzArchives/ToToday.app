@@ -4,7 +4,7 @@ const resolvePath = (path: string) => {
 	path = path.replace(/\[(\w+)\]/g, '.$1');
 	path = path.replace(/^\./, '');
 	return path.split('.');
-}
+};
 
 const obj = {
 	setByString: (object: object | any, newValue: any, path: string) => {
