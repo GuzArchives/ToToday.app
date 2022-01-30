@@ -19,7 +19,7 @@
 	</li>
 </template>
 
-<script lang="js">
+<script lang="ts">
 import Vue from 'vue';
 import sm from '~/libs/storageManagement';
 
@@ -44,23 +44,25 @@ export default Vue.extend({
 		},
 	},
 	methods: {
-		changeState(parentId) {
-			const state = document.querySelector(`input#subTaskCheckboxInput${this.id}`)?.checked;
+		changeState(parentId: number) {
+			const element = document.querySelector(
+				`input#checkboxInput${this.id}`
+			) as HTMLInputElement;
 
-			const localTasks = sm.get('tasks');
+			const localTasks: Task[] = sm.get('tasks');
 
-			localTasks[parentId].subTasks[this.id].checked = state;
+			localTasks[parentId].subTasks[this.id].checked = element?.checked;
 
 			sm.set('tasks', localTasks);
 		},
-		deleteSubTask(parentId) {
-			const localTasks = sm.get('tasks');
+		deleteSubTask(parentId: number) {
+			const localTasks: Task[] = sm.get('tasks');
 
 			localTasks[parentId].subTasks.splice(this.id, 1);
 
 			sm.set('tasks', localTasks);
-		}
-	}
+		},
+	},
 });
 </script>
 

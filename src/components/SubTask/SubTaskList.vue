@@ -20,7 +20,7 @@
 import Vue from 'vue';
 import sm from '~/libs/storageManagement';
 
-const subTaskItem = {
+const subTaskItem: SubTask = {
 	description: 'Task',
 	checked: false,
 };
@@ -59,7 +59,7 @@ export default Vue.extend({
 		addSubTask: (parentId: number) => {
 			if (sm.get('tasks') === undefined) sm.add('tasks', []);
 
-			const localTasks: any[] = sm.get('tasks');
+			const localTasks: Task[] = sm.get('tasks');
 			const parentTask = localTasks[parentId];
 
 			if (!parentTask.subTasks) parentTask.subTasks = [];

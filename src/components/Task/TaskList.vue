@@ -19,7 +19,7 @@
 import Vue from 'vue';
 import sm from '~/libs/storageManagement';
 
-const taskItem = {
+const taskItem: Task = {
 	title: 'Task 00',
 	description: 'Task',
 	checked: false,
@@ -37,9 +37,9 @@ export default Vue.extend({
 	beforeCreate() {
 		if (sm.get('tasks') === undefined) sm.add('tasks', []);
 
-		const localTasks = sm.get('tasks');
+		const localTasks: Task[] = sm.get('tasks');
 
-		for (const task of localTasks) task.newTask = undefined;
+		for (const task of localTasks) task.newTask = false;
 
 		sm.set('tasks', localTasks);
 	},
@@ -52,7 +52,7 @@ export default Vue.extend({
 		addTask: () => {
 			if (sm.get('tasks') === undefined) sm.add('tasks', []);
 
-			const localTasks = sm.get('tasks');
+			const localTasks: Task[] = sm.get('tasks');
 			taskItem.title = `Title Task ${localTasks.length}`;
 			taskItem.description = `Description Task ${localTasks.length}`;
 

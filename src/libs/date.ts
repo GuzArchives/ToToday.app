@@ -22,7 +22,7 @@ const date = {
 
 	year: () => new Date().getFullYear(),
 
-	day: (): any => {
+	day: () => {
 		return {
 			readable: `${String(date.dayNumber()).padStart(2, '0')} ${date.monthName(
 				Number(date.month())
@@ -49,7 +49,7 @@ const date = {
 
 	timeZone: () => String(new Date().getTimezoneOffset()),
 
-	full: () => {
+	full: (): DateInfo => {
 		return {
 			day: date.day(),
 			hour: date.hours(),

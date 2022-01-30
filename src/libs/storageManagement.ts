@@ -13,7 +13,7 @@ const sm = {
 	 * @param {string} path New value's path on `data`;
 	 * @param {any} value New value;
 	 */
-	add: (path: string, value: any) => {
+	add: (path: string, value: any): void => {
 		let data = sm.getJSON().data;
 
 		if (obj.getByString(data, `data.${path}`))
@@ -102,22 +102,22 @@ const sm = {
 	 *
 	 * **Used internally by the storage management.**
 	 */
-	getJSON: (): any => {
+	getJSON: (): StorageSchema => {
 		sm.checkJSON();
 		return JSON.parse(localStorage.getItem(storageIndex) + '');
 	},
 
 	/**
 	 * Sets a new `data` on the local storage JSON file *(also updates the `date.updated` meta-information)*.
-	 * @param {object} newData New data object to be updated/set;
+	 * @param {DataInfo | object} newData New data object to be updated/set;
 	 * @param {boolean} meta Do new data parameters contain `meta` information?
 	 *
 	 * **Used internally by the storage management.**
 	 */
-	setJSON: (newData: object, meta?: boolean) => {
+	setJSON: (newData: DataInfo | object, meta?: boolean) => {
 		if (meta) localStorage.setItem(storageIndex, JSON.stringify(newData));
 		else {
-			const newJSON = { meta: sm.getJSON().meta, data: newData };
+			const newJSON: StorageSchema = { meta: sm.getJSON().meta, data: newData };
 
 			localStorage.setItem(storageIndex, JSON.stringify(newJSON));
 
@@ -125,7 +125,7 @@ const sm = {
 
 			updatedMeta.date.updated = date.full();
 
-			const updatedJSON = {
+			const updatedJSON: StorageSchema = {
 				meta: updatedMeta,
 				data: newData,
 			};
@@ -169,9 +169,10 @@ const sm = {
 		if (localStorage.getItem(storageIndex) && !reset)
 			return window.alert('ERROR: Local storage already exists');
 
-		const colorTheme = localStorage.getItem('nuxt-color-mode');
+		const colorTheme: 'light' | 'dark' | string =
+			localStorage.getItem('nuxt-color-mode') || 'light';
 
-		const storage = {
+		const storage: StorageSchema = {
 			meta: {
 				index: storageIndex,
 				name: appInfo.name,

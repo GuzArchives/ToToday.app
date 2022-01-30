@@ -91,7 +91,7 @@ export default Vue.extend({
 			const element = document.querySelector(
 				`input#checkboxInput${this.id}`
 			) as HTMLInputElement;
-			const tasks = sm.get('tasks');
+			const tasks: Task[] = sm.get('tasks');
 
 			tasks[this.id].checked = element?.checked;
 
@@ -100,7 +100,7 @@ export default Vue.extend({
 			sm.set('tasks', tasks);
 		},
 		deleteTask() {
-			const localTasks = sm.get('tasks');
+			const localTasks: Task[] = sm.get('tasks');
 			localTasks.splice(this.id, 1);
 			sm.set('tasks', localTasks);
 		},
