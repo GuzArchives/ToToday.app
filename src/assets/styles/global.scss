@@ -34,6 +34,10 @@ body {
 	}
 }
 
+.preventAnimLoad * .preventAnim {
+	animation-duration: 0s !important;
+}
+
 /*
 ? Workaround with changing elements depending on the page's theme,
 ? probably there is a better way, using `v-if` and `v-else`, but apparently,

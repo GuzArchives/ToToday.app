@@ -24,6 +24,8 @@ const taskItem = {
 	description: 'Task',
 	checked: false,
 	newTask: true,
+	autoCheck: true,
+	subTasks: [],
 };
 
 export default Vue.extend({
@@ -37,7 +39,7 @@ export default Vue.extend({
 
 		const localTasks = sm.get('tasks');
 
-		for(const task of localTasks) task.newTask = undefined;
+		for (const task of localTasks) task.newTask = undefined;
 
 		sm.set('tasks', localTasks);
 	},
