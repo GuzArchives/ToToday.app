@@ -11,6 +11,7 @@
 				:checked="task.checked"
 			/>
 		</ul>
+		<ProgressBar />
 		<button @click="addTask()">Add tasks</button>
 	</div>
 </template>
