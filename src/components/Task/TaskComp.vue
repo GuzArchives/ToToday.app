@@ -213,6 +213,8 @@ export default Vue.extend({
 					padding: 1%;
 					padding-right: 2%;
 
+					cursor: pointer;
+
 					input {
 						display: none;
 					}
