@@ -1,6 +1,6 @@
 {
 	"name": "ToToday",
-	"version": "0.7.0",
+	"version": "0.7.1",
 	"private": true,
 	"scripts": {
 		"dev": "nuxt",
@@ -24,7 +24,7 @@
 	},
 	"devDependencies": {
 		"@babel/eslint-parser": "^7.16.3",
-		"@nuxt/image": "^0.6.1",
+		"@nuxt/image": "^0.6.0",
 		"@nuxt/types": "^2.15.8",
 		"@nuxt/typescript-build": "^2.1.0",
 		"@nuxtjs/color-mode": "^2.1.1",
