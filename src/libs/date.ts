@@ -1,7 +1,19 @@
-const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const months = [
+	'January',
+	'February',
+	'March',
+	'April',
+	'May',
+	'June',
+	'July',
+	'August',
+	'September',
+	'October',
+	'November',
+	'December',
+];
 
 const date = {
-
 	dayNumber: () => new Date().getDate(),
 
 	month: () => new Date().getMonth(),
@@ -10,37 +22,40 @@ const date = {
 
 	year: () => new Date().getFullYear(),
 
-	day: (): any => {
+	day: () => {
 		return {
-			readable: `${String(date.dayNumber()).padStart(2, '0')} ${date.monthName(Number(date.month()))} ${date.year()}`,
+			readable: `${String(date.dayNumber()).padStart(2, '0')} ${date.monthName(
+				Number(date.month())
+			)} ${date.year()}`,
 			number: date.dayNumber(),
 			month: date.month(),
 			year: date.year(),
-		}
+		};
 	},
 
 	hours: () => {
 		const d = new Date();
 
 		return {
-			readable: `${d.getHours()}:${d.getMinutes()}`,
+			readable: `${String(d.getHours()).padStart(2, '0')}:${String(
+				d.getMinutes()
+			).padStart(2, '0')}`,
 			hours: d.getHours(),
 			minutes: d.getMinutes(),
 			seconds: d.getSeconds(),
 			milliseconds: d.getMilliseconds(),
-		}
+		};
 	},
 
 	timeZone: () => String(new Date().getTimezoneOffset()),
 
-	full: () => {
+	full: (): DateInfo => {
 		return {
 			day: date.day(),
 			hour: date.hours(),
 			timeZone: date.timeZone(),
-		}
+		};
 	},
-
 };
 
 export default date;

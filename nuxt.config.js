@@ -2,6 +2,7 @@ export default {
 	srcDir: 'src/',
 	buildDir: 'dist',
 	target: 'static',
+	ssr: false,
 
 	// Global page headers: https://go.nuxtjs.dev/config-head
 	head: {
@@ -34,13 +35,12 @@ export default {
 		'@nuxt/image',
 
 		'@nuxtjs/color-mode',
-		
-		'@nuxtjs/pwa'
+
+		'@nuxtjs/pwa',
 	],
 
 	// Modules: https://go.nuxtjs.dev/config-modules
-	modules: [
-	],
+	modules: [],
 
 	// PWA module configuration: https://go.nuxtjs.dev/pwa
 	pwa: {

@@ -1,10 +1,10 @@
 <template>
 	<div class="footer">
 		<p>
-			Version: {{ version }}
+			Version: {{ version }} {{ storage_updated }}
 			<br />
 			<a href="http://github.com/ProjectLored/ToToday.app" target="_blank">
-				(c) 2022 Project Lored &bull; MIT License
+				(c) 2022 Lored &bull; MIT License
 			</a>
 			<br />
 			Icons provided by
@@ -16,12 +16,29 @@
 <script lang="ts">
 import Vue from 'vue';
 import appInfo from '~~/package.json';
+import sm from '~/libs/storageManagement';
 
 export default Vue.extend({
 	name: 'PageFooter',
 	data() {
-		return {version: appInfo.version};
-	}
+		return {
+			version: appInfo.version,
+			storage_updated: sm.get('date.updated', true)
+				? `- Storage Updated: ${sm.get('date.updated', true).day.readable} ${
+						sm.get('date.updated', true).hour.readable
+				  }`
+				: '',
+		};
+	},
+	mounted() {
+		window.addEventListener('localStorage-changed', () => {
+			this.storage_updated = sm.get('date.updated', true)
+				? `- Storage Updated: ${sm.get('date.updated', true).day.readable} ${
+						sm.get('date.updated', true).hour.readable
+				  }`
+				: '';
+		});
+	},
 });
 </script>
 
