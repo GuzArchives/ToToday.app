@@ -337,6 +337,7 @@ export default Vue.extend({
 
 				.info {
 					display: inline-block;
+					text-overflow: ellipsis;
 
 					h1 {
 						font-size: 1.2em;
@@ -347,6 +348,7 @@ export default Vue.extend({
 						font-family: $secondary-font;
 						font-size: 0.8em;
 						margin: 0;
+						white-space: pre-wrap;
 					}
 				}
 			}

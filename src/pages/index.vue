@@ -7,6 +7,7 @@
 		</div>
 		<div>
 			<TaskList />
+			<TaskInput />
 		</div>
 		<PageFooter />
 	</main>

@@ -11,7 +11,7 @@
 					:checked="subTask.checked"
 				/>
 			</ul>
-			<button @click="addSubTask(parent)">Add subtask</button>
+			<SubTaskInput :parent="parent" />
 		</div>
 	</span>
 </template>
@@ -19,11 +19,6 @@
 <script lang="ts">
 import Vue from 'vue';
 import sm from '~/libs/storageManagement';
-
-const subTaskItem: SubTask = {
-	description: 'Task',
-	checked: false,
-};
 
 export default Vue.extend({
 	name: 'SubTasks',
@@ -54,23 +49,6 @@ export default Vue.extend({
 		setTimeout(() => {
 			this.preventAnim = false;
 		}, 1000);
-	},
-	methods: {
-		addSubTask: (parentId: number) => {
-			if (sm.get('tasks') === undefined) sm.add('tasks', []);
-
-			const localTasks: Task[] = sm.get('tasks');
-			const parentTask = localTasks[parentId];
-
-			if (!parentTask.subTasks) parentTask.subTasks = [];
-
-			subTaskItem.description = `Description sub task ${parentTask.subTasks.length}`;
-
-			parentTask.subTasks.push(subTaskItem);
-			localTasks[parentId] = parentTask;
-
-			sm.set('tasks', localTasks);
-		},
 	},
 });
 </script>

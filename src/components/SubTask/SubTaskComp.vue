@@ -95,7 +95,6 @@ export default Vue.extend({
 				background-color: transparent;
 			}
 
-			font: inherit;
 			width: 20px;
 			height: 20px;
 			border: 5px solid currentColor;
@@ -107,6 +106,7 @@ export default Vue.extend({
 		}
 
 		.description {
+			font-family: $secondary-font;
 			margin: 1px 0;
 		}
 	}

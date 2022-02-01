@@ -12,22 +12,12 @@
 			/>
 		</ul>
 		<ProgressBar />
-		<button @click="addTask()">Add tasks</button>
 	</div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
 import sm from '~/libs/storageManagement';
-
-const taskItem: Task = {
-	title: 'Task 00',
-	description: 'Task',
-	checked: false,
-	newTask: true,
-	autoCheck: true,
-	subTasks: [],
-};
 
 export default Vue.extend({
 	data() {
@@ -48,19 +38,6 @@ export default Vue.extend({
 		window.addEventListener('localStorage-changed', () => {
 			this.list = sm.get('tasks') ? sm.get('tasks') : [];
 		});
-	},
-	methods: {
-		addTask: () => {
-			if (sm.get('tasks') === undefined) sm.add('tasks', []);
-
-			const localTasks: Task[] = sm.get('tasks');
-			taskItem.title = `Title Task ${localTasks.length}`;
-			taskItem.description = `Description Task ${localTasks.length}`;
-
-			localTasks.push(taskItem);
-
-			sm.set('tasks', localTasks);
-		},
 	},
 });
 </script>
