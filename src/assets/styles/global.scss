@@ -1,12 +1,24 @@
 @import '~assets/styles/_variables.scss';
 @import '~assets/styles/_mixins.scss';
 
+html {
+	height: 100%;
+	position: relative;
+}
+
 body {
 	@include center;
 
-	overflow: hidden;
-	height: 100vh;
+	overflow-x: hidden;
 	width: 100vw;
+	min-height: 100%;
+
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+
+	margin: 0;
 
 	transition: background-color 0.3s;
 

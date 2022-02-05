@@ -6,7 +6,7 @@
 		}taskContainer`"
 	>
 		<div class="taskControl">
-			<div :class="`task`">
+			<div class="task">
 				<div class="taskInfo">
 					<label
 						class="checkbox"
@@ -28,20 +28,20 @@
 						<p>{{ description }}</p>
 					</div>
 				</div>
-				<button
-					:class="`${
-						openSubTasks ? 'openedSubtasksButton' : 'closedSubtasksButton'
-					} subtasksButton`"
-					@click="openSubTasks = !openSubTasks"
-				>
-					<IconDropdown class="dropdownIcon" />
-				</button>
+				<nav class="controls">
+					<button
+						:class="`${
+							openSubTasks ? 'openedSubtasksButton' : 'closedSubtasksButton'
+						} subtasksButton`"
+						@click="openSubTasks = !openSubTasks"
+					>
+						<IconDropdown class="dropdownIcon" />
+					</button>
+					<button class="deleteButton" @click="deleteTask()">
+						<IconTrash class="trashIcon" />
+					</button>
+				</nav>
 			</div>
-			<nav class="controls">
-				<button class="deleteButton" @click="deleteTask()">
-					<IconTrash class="trashIcon" />
-				</button>
-			</nav>
 		</div>
 		<SubTaskList :parent="id" :opened="openSubTasks" />
 	</li>
@@ -111,13 +111,14 @@ export default Vue.extend({
 <style lang="scss">
 @import '~assets/styles/_variables.scss';
 @import '~assets/styles/_mixins.scss';
+@import '~assets/styles/_animations.scss';
 
 .newTask {
 	animation-delay: 0s !important;
 }
 
 .taskContainer {
-	@for $i from 1 through 100 {
+	@for $i from 1 through 1000 {
 		&#task#{$i} {
 			animation-delay: #{$i * 0.2}s;
 		}
@@ -126,19 +127,7 @@ export default Vue.extend({
 	opacity: 0;
 	transform: translateY(50%);
 
-	animation: enter 0.5s ease-out;
-	animation-fill-mode: forwards;
-
-	@keyframes enter {
-		from {
-			opacity: 0;
-			transform: translateY(50%);
-		}
-		to {
-			opacity: 1;
-			transform: translateY(0);
-		}
-	}
+	animation: enter 0.5s forwards ease-out;
 
 	.taskControl {
 		display: flex;
@@ -147,39 +136,6 @@ export default Vue.extend({
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-
-		.controls {
-			position: absolute;
-			right: -6%;
-
-			opacity: 0;
-			@media (pointer: none), (pointer: coarse) {
-				opacity: 0.5;
-			}
-			transition: opacity 0.2s;
-			transition: right 0.3s;
-
-			button {
-				background-color: transparent;
-				padding: 1px;
-				border: 0;
-				cursor: pointer;
-			}
-
-			.deleteButton {
-				.trashIcon * {
-					transition: stroke 0.2s;
-				}
-				&:hover .trashIcon * {
-					stroke: $begonia-red0;
-				}
-			}
-		}
-		&:hover .controls {
-			transition: 0.2s 0.5s;
-			opacity: 1;
-			right: -7%;
-		}
 
 		.task {
 			.light-mode & {
@@ -195,13 +151,12 @@ export default Vue.extend({
 			width: 100%;
 			z-index: 4;
 
-			border-radius: 20px;
-			padding: 10px;
+			border-radius: $task-border-radius;
+			padding: $task-padding;
 
-			display: flex;
-			align-items: center;
+			@include center;
 			justify-content: space-between;
-			padding-right: 5%;
+			text-align: left;
 
 			.taskInfo {
 				display: flex;
@@ -300,39 +255,6 @@ export default Vue.extend({
 							}
 						}
 					}
-
-					@keyframes iconAnim {
-						from {
-							transform: rotate(0) scale(1);
-						}
-						5% {
-							transform: rotate(0) scale(0.7);
-						}
-						50% {
-							transform: rotate(360deg) scale(1.2);
-						}
-						90% {
-							transform: scale(1.2);
-						}
-						to {
-							transform: scale(1);
-						}
-					}
-
-					@keyframes iconAnimReverse {
-						from {
-							transform: rotate(0) scale(1);
-						}
-						5% {
-							transform: rotate(0) scale(0.7);
-						}
-						50% {
-							transform: rotate(-360deg) scale(1);
-						}
-						to {
-							transform: rotate(-360deg) scale(1);
-						}
-					}
 				}
 
 				.info {
@@ -353,50 +275,75 @@ export default Vue.extend({
 				}
 			}
 
-			.subtasksButton {
-				display: flex;
-				align-items: center;
+			.controls {
+				transition: opacity 0.3s;
+				transition: transform 0.3s;
+				@include center;
 
-				opacity: 0;
-				@media (pointer: none), (pointer: coarse) {
-					opacity: 0.5;
+				@media (hover) and (min-width: 600px) {
+					transform: translateX(30px);
 				}
-				transition: opacity 0.2s;
+				@media (hover) {
+					opacity: 0;
+				}
 
-				background-color: transparent;
-				padding: 1px;
-				border: 0;
-				cursor: pointer;
+				button {
+					background-color: transparent;
+					padding: 1px;
+					margin: 0 2.5px;
+					border: 0;
 
-				.dropdownIcon {
+					cursor: pointer;
+					@include center;
+
+					&:first-of-type {
+						margin-left: 0;
+					}
+					&:last-of-type {
+						margin-right: 0;
+					}
+
 					* {
-						transition: stroke 0.2s;
+						transition: all 0.1s;
 					}
-					&:hover * {
-						.light-mode & {
-							stroke: $independence-gray0;
+					&:hover {
+						* {
+							.light-mode & {
+								stroke: $light-primary;
+							}
+							.dark-mode & {
+								stroke: $dark-primary;
+							}
 						}
-						.dark-mode & {
-							stroke: $dark-primary;
+					}
+
+					&.deleteButton {
+						@media (hover) and (min-width: 600px) {
+							transform: translateX(10px);
+						}
+						&:hover {
+							* {
+								stroke: $unchecked-color;
+							}
 						}
 					}
 				}
 
-				&.openedSubtasksButton {
-					.dropdownIcon {
+				& .subtasksButton {
+					&.openedSubtasksButton {
 						transform: rotate(180deg);
 					}
-				}
-				&.closedSubtasksButton {
-					.dropdownIcon {
+					&.closedSubtasksButton {
 						transform: rotate(0deg);
 					}
 				}
 			}
-			&:hover .subtasksButton {
-				opacity: 1;
-			}
 		}
+	}
+
+	&:hover .taskControl .task .controls {
+		transition: opacity 0.3s;
+		opacity: 1;
 	}
 }
 </style>

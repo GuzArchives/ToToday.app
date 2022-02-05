@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="taskListContainer">
 		<ul class="taskList">
 			<TaskComp
 				v-for="task in list"
@@ -11,6 +11,7 @@
 				:checked="task.checked"
 			/>
 		</ul>
+		<TaskInput />
 		<ProgressBar />
 	</div>
 </template>
@@ -46,8 +47,13 @@ export default Vue.extend({
 @import '~assets/styles/_variables.scss';
 @import '~assets/styles/_mixins.scss';
 
-.taskList {
-	list-style: none;
-	padding: 0;
+.taskListContainer {
+	max-width: 500px;
+	width: 100%;
+	.taskList {
+		width: 100%;
+		list-style: none;
+		padding: 0;
+	}
 }
 </style>
