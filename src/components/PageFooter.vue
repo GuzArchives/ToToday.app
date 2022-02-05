@@ -3,8 +3,9 @@
 		<p>
 			<span class="debugInfo">
 				Version: {{ version }} - Updated: {{ storage_updated }} -
+				{{ storage_size }}
+				<br />
 			</span>
-			<br />
 			(c) 2022
 			<a
 				href="https://github.com/LoredDev"
@@ -44,6 +45,7 @@ export default Vue.extend({
 						sm.get('date.updated', true).hour.readable
 				  }`
 				: '',
+			storage_size: `${sm.getSize().toFixed(2)}Kb`,
 		};
 	},
 	mounted() {
@@ -53,6 +55,7 @@ export default Vue.extend({
 						sm.get('date.updated', true).hour.readable
 				  }`
 				: '';
+			this.storage_size = `${sm.getSize().toFixed(2)}Kb`;
 		});
 	},
 });

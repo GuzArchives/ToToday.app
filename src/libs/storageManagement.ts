@@ -98,6 +98,14 @@ const sm = {
 	},
 
 	/**
+	 * Returns the size of the localStorage in KB
+	 */
+	getSize: () => {
+		const size = new TextEncoder().encode(JSON.stringify(sm.getJSON())).length;
+		return size / 1024;
+	},
+
+	/**
 	 * Gets and parses the local storage JSON file.
 	 *
 	 * **Used internally by the storage management.**
