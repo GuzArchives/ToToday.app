@@ -4,7 +4,7 @@
 			<button class="addTask" @click="addTask()">
 				<IconAdd class="addIcon" />
 			</button>
-			<form class="taskInputs">
+			<div class="taskInputs">
 				<div class="taskNameInputContainer">
 					<input
 						id="newTaskInputName"
@@ -12,7 +12,7 @@
 						type="text"
 						name="TaskNameInput"
 						placeholder="Task Title..."
-						maxlength="28"
+						maxlength="25"
 						@keypress.enter="addTask()"
 					/>
 				</div>
@@ -25,7 +25,7 @@
 						maxlength="150"
 					></textarea>
 				</div>
-			</form>
+			</div>
 		</div>
 	</div>
 </template>
@@ -101,81 +101,17 @@ export default Vue.extend({
 <style lang="scss">
 @import '~assets/styles/_variables.scss';
 @import '~assets/styles/_mixins.scss';
+@import '~assets/styles/_animations.scss';
 
 .alignInputContainer {
 	@include center;
-	@media not screen and (pointer: none), (pointer: coarse) {
-		&:not(:hover),
-		.taskInputContainer *:not(:focus-within) {
-			.taskInputContainer {
-				animation: shrink 0.5s forwards;
-				@keyframes shrink {
-					from {
-						padding: 5px 10px;
-						margin: 10px 0;
-						transform: scale(100%);
-						width: 100%;
-					}
-					to {
-						padding: 0px 25%;
-						margin: 0px 0;
-						transform: scale(60%);
-						width: 0%;
-					}
-				}
-				.taskInputs {
-					animation: hideInputs 0.5s forwards;
-					@keyframes hideInputs {
-						from {
-							transform: translateX(0%);
-							opacity: 1;
-							width: 100%;
-						}
-						to {
-							transform: translateX(25%);
-							opacity: 0;
-							width: 0%;
-						}
-					}
-				}
-			}
-		}
 
-		&:hover {
-			.taskInputContainer {
-				animation: expand 0.5s forwards;
-				@keyframes expand {
-					from {
-						padding: 0px 25%;
-						margin: 0px 0;
-						transform: scale(60%);
-						width: 0%;
-					}
-					to {
-						padding: 5px 10px;
-						margin: 10px 0;
-						transform: scale(100%);
-						width: 100%;
-					}
-				}
-				.taskInputs {
-					animation: showInputs 0.5s forwards;
-					@keyframes showInputs {
-						from {
-							transform: translateX(25%);
-							opacity: 0;
-							width: 0%;
-						}
-						to {
-							transform: translateX(0%);
-							opacity: 1;
-							width: 100%;
-						}
-					}
-				}
-			}
-		}
-	}
+	opacity: 0;
+	transform: translateY(50%);
+
+	animation: enter 0.5s forwards ease-out;
+	animation-delay: 1s;
+
 	.taskInputContainer {
 		&,
 		* {
@@ -194,8 +130,14 @@ export default Vue.extend({
 			color: $dark-primary;
 		}
 
+		padding: $task-padding;
+		margin: 10px 0;
+		transform: scale(100%);
+		width: 100%;
+
 		border-radius: 20px;
 		@include center;
+		justify-content: left;
 
 		@media (pointer: none), (pointer: coarse) {
 			padding: 5px 10px;
@@ -235,6 +177,7 @@ export default Vue.extend({
 
 		.taskInputs {
 			text-align: left;
+			width: 100%;
 
 			.taskNameInputContainer,
 			.taskDescriptionInputContainer {
@@ -244,7 +187,7 @@ export default Vue.extend({
 				textarea {
 					width: 90%;
 					border: 0;
-					border-radius: 10px;
+					border-radius: calc($task-border-radius/2);
 
 					text-overflow: ellipsis;
 

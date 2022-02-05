@@ -1,14 +1,14 @@
 <template>
-	<picture>
+	<picture itemscope itemtype="https://schema.org/logo">
 		<nuxt-img
 			class="light-mode-element"
-			src="/images/ToToday-Dark.svg"
+			src="/images/ToToday-dark-alpha.svg"
 			alt="ToToday logo"
 			width="250"
 		/>
 		<nuxt-img
 			class="dark-mode-element"
-			src="/images/ToToday-Light.svg"
+			src="/images/ToToday-light-alpha.svg"
 			alt="ToToday logo"
 			width="250"
 		/>

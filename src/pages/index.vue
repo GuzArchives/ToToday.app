@@ -1,13 +1,12 @@
 <template>
-	<main :class="`${preventAnim ? 'preventAnimLoad ' : ''}container`">
+	<main :class="`${preventAnim ? 'preventAnimLoad ' : ''}main`">
 		<div>
 			<ToTodayLogo />
 			<p>A single page web app to help yours day-to-day tasks</p>
 			<ThemePicker />
 		</div>
-		<div>
+		<div class="tasks">
 			<TaskList />
-			<TaskInput />
 		</div>
 		<PageFooter />
 	</main>
@@ -29,3 +28,14 @@ export default Vue.extend({
 	},
 });
 </script>
+
+<style lang="scss">
+@import '~assets/styles/_variables.scss';
+@import '~assets/styles/_mixins.scss';
+
+.main {
+	.tasks {
+		@include center;
+	}
+}
+</style>

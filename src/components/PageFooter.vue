@@ -1,14 +1,30 @@
 <template>
 	<div class="footer">
 		<p>
-			Version: {{ version }} {{ storage_updated }}
+			<span class="debugInfo">
+				Version: {{ version }} - Updated: {{ storage_updated }} -
+			</span>
 			<br />
-			<a href="http://github.com/ProjectLored/ToToday.app" target="_blank">
-				(c) 2022 Lored &bull; MIT License
+			(c) 2022
+			<a
+				href="https://github.com/LoredDev"
+				target="_blank"
+				rel="noreferrer"
+				itemtype="https://schema.org/brand"
+			>
+				Lored
 			</a>
-			<br />
-			Icons provided by
-			<a href="https://iconoir.com/" target="_blank"> Iconoir </a>
+			&bull;
+			<a
+				href="https://github.com/LoredDev/ToToday.app/blob/dev/LICENSE"
+				target="_blank"
+				rel="noreferrer"
+				itemtype="https://schema.org/license"
+			>
+				MIT License
+			</a>
+			&bull; Icons provided by
+			<a href="https://iconoir.com/" target="_blank"> Iconoir</a>
 		</p>
 	</div>
 </template>
@@ -24,7 +40,7 @@ export default Vue.extend({
 		return {
 			version: appInfo.version,
 			storage_updated: sm.get('date.updated', true)
-				? `- Storage Updated: ${sm.get('date.updated', true).day.readable} ${
+				? `${sm.get('date.updated', true).day.readable} ${
 						sm.get('date.updated', true).hour.readable
 				  }`
 				: '',
@@ -33,7 +49,7 @@ export default Vue.extend({
 	mounted() {
 		window.addEventListener('localStorage-changed', () => {
 			this.storage_updated = sm.get('date.updated', true)
-				? `- Storage Updated: ${sm.get('date.updated', true).day.readable} ${
+				? `${sm.get('date.updated', true).day.readable} ${
 						sm.get('date.updated', true).hour.readable
 				  }`
 				: '';
@@ -49,7 +65,6 @@ export default Vue.extend({
 .footer {
 	@include link;
 
-	position: fixed;
 	bottom: 0;
 	left: 0;
 	width: 100vw;
@@ -62,6 +77,10 @@ export default Vue.extend({
 
 	.dark-mode & {
 		color: $dark-secondary;
+	}
+
+	.debugInfo {
+		font-size: 0.8em;
 	}
 }
 </style>

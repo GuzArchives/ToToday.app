@@ -4,7 +4,7 @@
 			<button class="addTask" @click="addSubTask(parent)">
 				<IconAdd class="addIcon" />
 			</button>
-			<form class="subTaskInput">
+			<div class="subTaskInput">
 				<input
 					id="newSubTaskInputName"
 					class="subTaskNameInput"
@@ -14,7 +14,7 @@
 					maxlength="50"
 					@keypress.enter="addSubTask(parent)"
 				/>
-			</form>
+			</div>
 		</div>
 	</div>
 </template>
@@ -141,7 +141,7 @@ export default Vue.extend({
 				height: 1.5em;
 				width: 90%;
 				border: 0;
-				border-radius: 10px;
+				border-radius: calc($task-border-radius/2);
 				padding: 5px 10px;
 
 				.light-mode & {

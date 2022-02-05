@@ -109,7 +109,7 @@ export default Vue.extend({
 
 	padding: 20px 5% 10px 5%;
 
-	border-radius: 0 0 20px 20px;
+	border-radius: 0 0 $task-border-radius $task-border-radius;
 
 	text-align: left;
 

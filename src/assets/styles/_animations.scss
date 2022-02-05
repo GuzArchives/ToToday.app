@@ -1,0 +1,54 @@
+@keyframes enter {
+	from {
+		opacity: 0;
+		transform: translateY(50%);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes leave {
+	from {
+		opacity: 1;
+		transform: translateY(0%);
+	}
+	to {
+		opacity: 0;
+		transform: translateY(50%);
+	}
+}
+
+@keyframes iconAnim {
+	from {
+		transform: rotate(0) scale(1);
+	}
+	5% {
+		transform: rotate(0) scale(0.7);
+	}
+	50% {
+		transform: rotate(360deg) scale(1.2);
+	}
+	90% {
+		transform: scale(1.2);
+	}
+	to {
+		transform: scale(1);
+	}
+}
+
+@keyframes iconAnimReverse {
+	from {
+		transform: rotate(0) scale(1);
+	}
+	5% {
+		transform: rotate(0) scale(0.7);
+	}
+	50% {
+		transform: rotate(-360deg) scale(1);
+	}
+	to {
+		transform: rotate(-360deg) scale(1);
+	}
+}

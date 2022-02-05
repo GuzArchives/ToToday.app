@@ -64,50 +64,56 @@ export default Vue.extend({
 <style lang="scss">
 @import '~assets/styles/_variables.scss';
 @import '~assets/styles/_mixins.scss';
+@import '~assets/styles/_animations.scss';
 
-.progressInfo {
-	margin-top: 0;
-	.light-mode & {
-		color: $light-secondary;
-	}
-	.dark-mode & {
-		color: $dark-secondary;
-	}
-}
+.progressBar {
+	opacity: 0;
+	transform: translateY(50%);
 
-.barContainer {
-	width: 100%;
+	animation: enter 0.3s forwards ease-out;
+	animation-delay: 1.5s;
 
-	@include center;
-
-	animation: enter 0.5s ease-out;
-	animation-fill-mode: forwards;
-
-	.bar {
-		$bar-height: 15px;
-
-		@include center;
-		justify-content: left;
-
+	.progressInfo {
+		margin-top: 0;
 		.light-mode & {
-			background-color: $blue2;
+			color: $light-secondary;
 		}
 		.dark-mode & {
-			background-color: $eerie-black0;
+			color: $dark-secondary;
 		}
+	}
 
-		width: 60%;
-		height: $bar-height;
-		border-radius: $bar-height;
+	.barContainer {
+		width: 100%;
 
-		.progress {
-			transition: width 0.5s;
+		@include center;
 
-			background-color: $checked-color;
+		.bar {
+			$bar-height: 15px;
+
+			@include center;
+			justify-content: left;
+
+			.light-mode & {
+				background-color: $blue2;
+			}
+			.dark-mode & {
+				background-color: $eerie-black0;
+			}
+
+			width: 60%;
+			height: $bar-height;
 			border-radius: $bar-height;
-			height: 49%;
-			// width: 100%-4%;
-			margin-left: 2%;
+
+			.progress {
+				transition: width 0.5s;
+
+				background-color: $checked-color;
+				border-radius: $bar-height;
+				height: 49%;
+				// width: 100%-4%;
+				margin-left: 2%;
+			}
 		}
 	}
 }
