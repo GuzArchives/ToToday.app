@@ -10,10 +10,50 @@ export default {
 		meta: [
 			{ charset: 'utf-8' },
 			{ name: 'viewport', content: 'width=device-width, initial-scale=1' },
-			{ hid: 'description', name: 'description', content: '' },
+			{
+				hid: 'description',
+				name: 'description',
+				content: 'A single page web app to help yours day-to-day tasks',
+			},
 			{ name: 'format-detection', content: 'telephone=no' },
+			// Twitter meta tags
+			{
+				hid: 'twitter:card',
+				name: 'twitter:card',
+				content: 'summary',
+			},
+			{
+				hid: 'twitter:title',
+				name: 'twitter:title',
+				content: 'ToToday',
+			},
+			{
+				hid: 'twitter:image',
+				name: 'twitter:image',
+				content: '/favicon.ico',
+			},
+			{
+				hid: 'twitter:description',
+				name: 'twitter:description',
+				content: 'A single page web app to help yours day-to-day tasks',
+			},
+			{
+				hid: 'twitter:creator',
+				name: 'twitter:creator',
+				content: '@Guz013_',
+			},
 		],
-		link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+		link: [
+			{
+				rel: 'icon',
+				type: 'image/x-icon',
+				href: '/favicon.ico',
+			},
+			{
+				rel: 'canonical',
+				href: 'https://totoday.vercel.app',
+			},
+		],
 	},
 
 	// Global CSS: https://go.nuxtjs.dev/config-css
@@ -44,9 +84,22 @@ export default {
 
 	// PWA module configuration: https://go.nuxtjs.dev/pwa
 	pwa: {
+		meta: {
+			twitterCard: 'summary',
+			twitterCreator: '@Guz013_',
+		},
 		manifest: {
+			name: 'ToToday',
+			description: 'A single page web app to help yours day-to-day tasks',
+			theme_color: 'dark',
+			background_color: '#1a1826',
 			lang: 'en',
 		},
+	},
+
+	// Color Mode module configuration: https://color-mode.nuxtjs.org/
+	colorMode: {
+		preference: 'dark',
 	},
 
 	image: {

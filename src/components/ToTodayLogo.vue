@@ -1,5 +1,5 @@
 <template>
-	<picture>
+	<picture itemscope itemtype="https://schema.org/logo">
 		<nuxt-img
 			class="light-mode-element"
 			src="/images/ToToday-dark-alpha.svg"
