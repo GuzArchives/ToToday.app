@@ -1,11 +1,6 @@
 <template>
 	<div class="footer">
 		<p>
-			<span class="debugInfo">
-				Version: {{ version }} - Updated: {{ storage_updated }} -
-				{{ storage_size }}
-				<br />
-			</span>
 			(c) 2022
 			<a
 				href="https://github.com/LoredDev"
