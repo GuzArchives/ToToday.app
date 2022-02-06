@@ -31,3 +31,15 @@
 	justify-content: center;
 	text-align: center;
 }
+
+@mixin colorFadeAnim($fromColor, $toColor, $duration, $id) {
+	@keyframes colorFadeAnim-#{$id} {
+		from {
+			stroke: $fromColor;
+		}
+		to {
+			stroke: $toColor;
+		}
+	}
+	animation: colorFadeAnim-#{$id} $duration;
+}

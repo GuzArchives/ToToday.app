@@ -1,14 +1,14 @@
 <template>
-	<picture>
+	<picture itemscope itemtype="https://schema.org/logo">
 		<nuxt-img
-			v-if="$colorMode.value != 'dark'"
-			src="/images/ToToday-Dark.svg"
+			class="light-mode-element"
+			src="/images/ToToday-dark-alpha.svg"
 			alt="ToToday logo"
 			width="250"
 		/>
 		<nuxt-img
-			v-else
-			src="/images/ToToday-Light.svg"
+			class="dark-mode-element"
+			src="/images/ToToday-light-alpha.svg"
 			alt="ToToday logo"
 			width="250"
 		/>

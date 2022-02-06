@@ -3,14 +3,26 @@
 		<button
 			@click="
 				$colorMode.preference =
-					$colorMode.preference === 'dark' ? 'light' : 'dark'
+					$colorMode.preference === 'dark' ? 'light' : 'dark';
+				updateThemeInfo($colorMode.preference);
 			"
 		>
-			<IconMoon v-if="$colorMode.preference !== 'dark'" />
-			<IconSun v-else />
+			<IconMoon class="light-mode-element" />
+			<IconSun class="dark-mode-element" />
 		</button>
 	</div>
 </template>
+
+<script>
+import Vue from 'vue';
+import sm from '~/libs/storageManagement';
+
+export default Vue.extend({
+	methods: {
+		updateThemeInfo: (theme) => sm.set('theme', theme, false, true),
+	},
+});
+</script>
 
 <style lang="scss">
 @import '~assets/styles/_variables.scss';
