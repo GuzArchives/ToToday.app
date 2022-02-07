@@ -6,7 +6,7 @@
 			</button>
 			<div class="subTaskInput">
 				<input
-					id="newSubTaskInputName"
+					:id="`newSubTaskInputName-parent${parent}`"
 					class="subTaskNameInput"
 					type="text"
 					name="subTaskNameInput"
@@ -36,7 +36,7 @@ export default Vue.extend({
 			if (sm.get('tasks') === undefined) sm.add('tasks', []);
 
 			const titleInput = document.querySelector(
-				'input#newSubTaskInputName'
+				`input#newSubTaskInputName-parent${parentId}`
 			) as HTMLInputElement;
 
 			const newTitle = titleInput.value;
@@ -47,14 +47,14 @@ export default Vue.extend({
 
 				(
 					document.querySelector(
-						'input#newSubTaskInputName'
+						`input#newSubTaskInputName-parent${parentId}`
 					) as HTMLInputElement
 				).className = titleInput.className;
 
 				setTimeout(() => {
 					(
 						document.querySelector(
-							'input#newSubTaskInputName'
+							`input#newSubTaskInputName-parent${parentId}`
 						) as HTMLInputElement
 					).className = titleInput.className.replace(' warnTitle', '');
 				}, 1500);
@@ -75,10 +75,11 @@ export default Vue.extend({
 			parentTask.subTasks.push(subTaskItem);
 			localTasks[parentId] = parentTask;
 
+
 			sm.set('tasks', localTasks);
 
 			(
-				document.querySelector('input#newSubTaskInputName') as HTMLInputElement
+				document.querySelector(`input#newSubTaskInputName-parent${parentId}`) as HTMLInputElement
 			).value = '';
 		},
 	},
