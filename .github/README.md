@@ -77,10 +77,10 @@ For a detailed explanation of Nuxt.js, check the [documentation][nuxtdocs].
 [licensebadge]: https://img.shields.io/badge/License-MIT-white?style=flat-square&logo=Open%20Source%20Initiative&logoColor=96cdfb&labelColor=161032&color=96cdfb
 [issuesbadge]: https://img.shields.io/github/issues-raw/LoredDev/ToToday.app?style=flat-square&label=Issues&logoColor=fc6d6d&labelColor=161032&color=fc6d6d
 [pullrequestsbadge]: https://img.shields.io/github/issues-pr-raw/LoredDev/ToToday.app?style=flat-square&label=Pull%20Requests&logoColor=c78dff&labelColor=161032&color=c78dff
-[supportbadge]: https://img.shields.io/badge/Support-white?style=flat-square&labelColor=d9e0ee&color=d9e0ee&logoColor=161320&logo=Buy%20Me%20A%20Coffee
+[supportbadge]: https://img.shields.io/badge/Support-white?style=flat-square&labelColor=d9e0ee&color=d9e0ee&logoColor=161320&logo=Ko-Fi
 [issues]: https://github.com/LoredDev/ToToday.app/issues
 [pullrequests]: https://github.com/LoredDev/ToToday.app/pulls
-[support]: https://www.buymeacoffee.com/guz013
+[support]: https://www.ko-fi.com/guz013
 [vue]: vuejs.org
 [nuxtjs]: https://nuxtjs.org
 [iconoir]: https://iconoir.com/
