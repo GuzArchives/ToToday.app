@@ -1,11 +1,6 @@
 <template>
 	<div class="footer">
 		<p>
-			<span class="debugInfo">
-				Version: {{ version }} - Updated: {{ storage_updated }} -
-				{{ storage_size }}
-				<br />
-			</span>
 			(c) 2022
 			<a
 				href="https://github.com/LoredDev"
@@ -29,37 +24,6 @@
 		</p>
 	</div>
 </template>
-
-<script lang="ts">
-import Vue from 'vue';
-import appInfo from '~~/package.json';
-import sm from '~/libs/storageManagement';
-
-export default Vue.extend({
-	name: 'PageFooter',
-	data() {
-		return {
-			version: appInfo.version,
-			storage_updated: sm.get('date.updated', true)
-				? `${sm.get('date.updated', true).day.readable} ${
-						sm.get('date.updated', true).hour.readable
-				  }`
-				: '',
-			storage_size: `${sm.getSize().toFixed(2)}Kb`,
-		};
-	},
-	mounted() {
-		window.addEventListener('storageUpdated-meta', () => {
-			this.storage_updated = sm.get('date.updated', true)
-				? `${sm.get('date.updated', true).day.readable} ${
-						sm.get('date.updated', true).hour.readable
-				  }`
-				: '';
-			this.storage_size = `${sm.getSize().toFixed(2)}Kb`;
-		});
-	},
-});
-</script>
 
 <style scoped lang="scss">
 @import '~assets/styles/_variables.scss';
