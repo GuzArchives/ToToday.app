@@ -91,7 +91,7 @@ export default {
 		manifest: {
 			name: 'ToToday',
 			description: 'A single page web app to help yours day-to-day tasks',
-			theme_color: 'dark',
+			theme_color: '#1a1826',
 			background_color: '#1a1826',
 			lang: 'en',
 		},
