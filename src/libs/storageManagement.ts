@@ -12,8 +12,9 @@ const sm = {
 	 * Adds new value on `data`. *Don't create or rewrite the value if it already exists.*
 	 * @param {string} path New value's path on `data`;
 	 * @param {any} value New value;
+	 * @param {string | string[] | undefined} event Event or list of events types/names to be dispatched;
 	 */
-	add: (path: string, value: any): void => {
+	add: (path: string, value: any, event?: string | string[]): void => {
 		let data = sm.getJSON().data;
 
 		if (obj.getByString(data, `data.${path}`))
@@ -21,13 +22,14 @@ const sm = {
 
 		data = obj.setByString(data, value, path);
 
-		sm.setJSON(data);
+		sm.setJSON(data, event);
 	},
 
 	/**
 	 * Rewrite a value inside of `data` with a new *(creates a new path/value if it's doesn't exist before)*.
 	 * @param {string} path Value's path on `data`;
 	 * @param {any} value The new value to replace;
+	 * @param {string | string[] | undefined} event Event or list of events types/names to be dispatched;
 	 * @param {boolean | undefined} getOld Return the old value of the path?
 	 * @param {boolean | undefined} meta Update a value on `meta`?
 	 *
@@ -36,25 +38,26 @@ const sm = {
 	set: (
 		path: string,
 		value: any,
+		event?: string | string[],
 		getOld?: boolean,
 		meta?: boolean
 	): void | any => {
 		if (meta) {
 			let metaData = sm.getJSON();
 			metaData = obj.setByString(metaData, undefined, path);
-			sm.setJSON(metaData, true);
+			sm.setJSON(metaData, 'meta', true);
 			return;
 		}
 
 		let data = sm.getJSON().data;
 
-		if (obj.getByString(data, path)) return sm.add(path, value);
+		if (obj.getByString(data, path)) return sm.add(path, value, event);
 
 		const oldValue = obj.getByString(data, path);
 
 		data = obj.setByString(data, value, path);
 
-		sm.setJSON(data);
+		sm.setJSON(data, event);
 
 		if (getOld) return oldValue;
 	},
@@ -81,18 +84,23 @@ const sm = {
 	/**
 	 * Removes a value from localStorage's data
 	 * @param {string} path Value's path on `data`;
+	 * @param {string | string[] | undefined} event Event or list of events types/names to be dispatched;
 	 * @param {boolean | undefined} getOld Return the old value of the path?
 	 *
 	 * @returns The old value of the path, if `getOld` is `true`.
 	 */
-	remove: (path: string, getOld?: boolean): void | any => {
+	remove: (
+		path: string,
+		event?: string | string[],
+		getOld?: boolean
+	): void | any => {
 		let data = sm.getJSON().data;
 
 		const oldValue = obj.getByString(data, path);
 
 		data = obj.setByString(data, undefined, path);
 
-		sm.setJSON(data);
+		sm.setJSON(data, event);
 
 		if (getOld) return oldValue;
 	},
@@ -118,11 +126,16 @@ const sm = {
 	/**
 	 * Sets a new `data` on the local storage JSON file *(also updates the `date.updated` meta-information)*.
 	 * @param {DataInfo | object} newData New data object to be updated/set;
+	 * @param {string | string[]} event Event or list of events types/names to be dispatched;
 	 * @param {boolean} meta Do new data parameters contain `meta` information?
 	 *
 	 * **Used internally by the storage management.**
 	 */
-	setJSON: (newData: DataInfo | object, meta?: boolean) => {
+	setJSON: (
+		newData: DataInfo | object,
+		event?: string | string[],
+		meta?: boolean
+	) => {
 		if (meta) localStorage.setItem(storageIndex, JSON.stringify(newData));
 		else {
 			const newJSON: StorageSchema = { meta: sm.getJSON().meta, data: newData };
@@ -139,8 +152,20 @@ const sm = {
 			};
 
 			localStorage.setItem(storageIndex, JSON.stringify(updatedJSON));
+
+			if (event || event !== '') {
+				if (event instanceof Array) {
+					for (const e of event) {
+						window.dispatchEvent(new CustomEvent(`storageUpdated-${e}`));
+					}
+				} else {
+					window.dispatchEvent(new CustomEvent(`storageUpdated-${event}`));
+				}
+			} else {
+				window.dispatchEvent(new CustomEvent('storageUpdated'));
+			}
 		}
-		window.dispatchEvent(new CustomEvent('localStorage-changed'));
+		window.dispatchEvent(new CustomEvent('storageUpdated-meta'));
 	},
 
 	/**
@@ -195,7 +220,7 @@ const sm = {
 			data: {},
 		};
 
-		sm.setJSON(storage, true);
+		sm.setJSON(storage, 'meta', true);
 	},
 };
 

@@ -41,7 +41,7 @@ export default Vue.extend({
 		};
 	},
 	mounted() {
-		window.addEventListener('localStorage-changed', () => {
+		window.addEventListener(`storageUpdated-subTaskList-${this.parent}`, () => {
 			this.subTaskList = sm.get('tasks')[this.parent].subTasks
 				? sm.get('tasks')[this.parent].subTasks
 				: [];

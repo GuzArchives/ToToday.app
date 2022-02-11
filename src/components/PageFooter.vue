@@ -25,37 +25,6 @@
 	</div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue';
-import appInfo from '~~/package.json';
-import sm from '~/libs/storageManagement';
-
-export default Vue.extend({
-	name: 'PageFooter',
-	data() {
-		return {
-			version: appInfo.version,
-			storage_updated: sm.get('date.updated', true)
-				? `${sm.get('date.updated', true).day.readable} ${
-						sm.get('date.updated', true).hour.readable
-				  }`
-				: '',
-			storage_size: `${sm.getSize().toFixed(2)}Kb`,
-		};
-	},
-	mounted() {
-		window.addEventListener('localStorage-changed', () => {
-			this.storage_updated = sm.get('date.updated', true)
-				? `${sm.get('date.updated', true).day.readable} ${
-						sm.get('date.updated', true).hour.readable
-				  }`
-				: '';
-			this.storage_size = `${sm.getSize().toFixed(2)}Kb`;
-		});
-	},
-});
-</script>
-
 <style scoped lang="scss">
 @import '~assets/styles/_variables.scss';
 @import '~assets/styles/_mixins.scss';

@@ -97,12 +97,12 @@ export default Vue.extend({
 
 			this.openSubTasks = false;
 
-			sm.set('tasks', tasks);
+			sm.set('tasks', tasks, ['taskList', 'taskState']);
 		},
 		deleteTask() {
 			const localTasks: Task[] = sm.get('tasks');
 			localTasks.splice(this.id, 1);
-			sm.set('tasks', localTasks);
+			sm.set('tasks', localTasks, ['taskList', 'taskState']);
 		},
 	},
 });

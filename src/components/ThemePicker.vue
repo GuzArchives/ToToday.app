@@ -19,7 +19,7 @@ import sm from '~/libs/storageManagement';
 
 export default Vue.extend({
 	methods: {
-		updateThemeInfo: (theme) => sm.set('theme', theme, false, true),
+		updateThemeInfo: (theme) => sm.set('theme', theme, 'meta', false, true),
 	},
 });
 </script>
