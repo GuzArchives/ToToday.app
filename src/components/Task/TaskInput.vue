@@ -38,7 +38,7 @@ export default Vue.extend({
 	name: 'TaskInput',
 	methods: {
 		addTask: () => {
-			if (sm.get('tasks') === undefined) sm.add('tasks', []);
+			if (sm.get('tasks') === undefined) sm.add('tasks', [], 'taskList');
 
 			const titleInput = document.querySelector(
 				'input#newTaskInputName'
@@ -82,7 +82,7 @@ export default Vue.extend({
 
 			localTasks.push(taskItem);
 
-			sm.set('tasks', localTasks);
+			sm.set('tasks', localTasks, 'taskList');
 
 			(
 				document.querySelector('input#newTaskInputName') as HTMLInputElement

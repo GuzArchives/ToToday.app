@@ -53,14 +53,14 @@ export default Vue.extend({
 
 			localTasks[parentId].subTasks[this.id].checked = element.checked;
 
-			sm.set('tasks', localTasks);
+			sm.set('tasks', localTasks, [`subTaskList-${parentId}`, 'subTaskState']);
 		},
 		deleteSubTask(parentId: number) {
 			const localTasks: Task[] = sm.get('tasks');
 
 			localTasks[parentId].subTasks.splice(this.id, 1);
 
-			sm.set('tasks', localTasks);
+			sm.set('tasks', localTasks, [`subTaskList-${parentId}`, 'subTaskState']);
 		},
 	},
 });

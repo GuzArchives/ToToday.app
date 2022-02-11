@@ -27,16 +27,16 @@ export default Vue.extend({
 		};
 	},
 	beforeCreate() {
-		if (sm.get('tasks') === undefined) sm.add('tasks', []);
+		if (sm.get('tasks') === undefined) sm.add('tasks', [], 'taskList');
 
 		const localTasks: Task[] = sm.get('tasks');
 
 		for (const task of localTasks) task.newTask = false;
 
-		sm.set('tasks', localTasks);
+		sm.set('tasks', localTasks, 'taskList');
 	},
 	mounted() {
-		window.addEventListener('localStorage-changed', () => {
+		window.addEventListener('storageUpdated-taskList', () => {
 			this.list = sm.get('tasks') ? sm.get('tasks') : [];
 		});
 	},

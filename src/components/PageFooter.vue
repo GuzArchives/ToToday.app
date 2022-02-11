@@ -49,7 +49,7 @@ export default Vue.extend({
 		};
 	},
 	mounted() {
-		window.addEventListener('localStorage-changed', () => {
+		window.addEventListener('storageUpdated-meta', () => {
 			this.storage_updated = sm.get('date.updated', true)
 				? `${sm.get('date.updated', true).day.readable} ${
 						sm.get('date.updated', true).hour.readable

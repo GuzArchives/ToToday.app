@@ -27,7 +27,10 @@ export default Vue.extend({
 		this.progress = this.getProgress().percentage;
 	},
 	mounted() {
-		window.addEventListener('localStorage-changed', () => {
+		window.addEventListener('storageUpdated-taskState', () => {
+			this.progress = this.getProgress().percentage;
+		});
+		window.addEventListener('storageUpdated-subTaskState', () => {
 			this.progress = this.getProgress().percentage;
 		});
 	},

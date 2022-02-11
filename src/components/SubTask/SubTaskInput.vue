@@ -33,7 +33,8 @@ export default Vue.extend({
 	},
 	methods: {
 		addSubTask: (parentId: number) => {
-			if (sm.get('tasks') === undefined) sm.add('tasks', []);
+			if (sm.get('tasks') === undefined)
+				sm.add('tasks', [], `subTaskList-${parentId}`);
 
 			const titleInput = document.querySelector(
 				`input#newSubTaskInputName-parent${parentId}`
@@ -75,11 +76,12 @@ export default Vue.extend({
 			parentTask.subTasks.push(subTaskItem);
 			localTasks[parentId] = parentTask;
 
-
-			sm.set('tasks', localTasks);
+			sm.set('tasks', localTasks, `subTaskList-${parentId}`);
 
 			(
-				document.querySelector(`input#newSubTaskInputName-parent${parentId}`) as HTMLInputElement
+				document.querySelector(
+					`input#newSubTaskInputName-parent${parentId}`
+				) as HTMLInputElement
 			).value = '';
 		},
 	},
