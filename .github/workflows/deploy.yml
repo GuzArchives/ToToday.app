@@ -19,4 +19,4 @@ jobs:
           vercel-args: '--prod'
           vercel-org-id: ${{ secrets.ORG_ID}}
           vercel-project-id: ${{ secrets.PROJECT_ID}}
-					github-comment: 'App deployed for production at:\n\nhttps://totoday.vercel.app\n\nCreated with [vercel-action](https://github.com/marketplace/actions/vercel-action)'
+          github-comment: 'App deployed for production at:\n\nhttps://totoday.vercel.app\n\nCreated with [vercel-action](https://github.com/marketplace/actions/vercel-action)'
