@@ -33,7 +33,7 @@
 						:class="`${
 							openSubTasks ? 'openedSubtasksButton' : 'closedSubtasksButton'
 						} subtasksButton`"
-						@click="openSubTasks = !openSubTasks"
+						@click="openSubTasksFunc()"
 					>
 						<IconDropdown class="dropdownIcon" />
 					</button>
@@ -43,7 +43,7 @@
 				</nav>
 			</div>
 		</div>
-		<SubTaskList :parent="id" :opened="openSubTasks" />
+		<LazySubTaskList v-if="showSubTasks" :parent="id" :opened="openSubTasks" />
 	</li>
 </template>
 
@@ -78,6 +78,7 @@ export default Vue.extend({
 	data() {
 		return {
 			openSubTasks: false,
+			showSubTasks: false,
 			preventAnim: true,
 		};
 	},
@@ -87,6 +88,17 @@ export default Vue.extend({
 		}, 1000);
 	},
 	methods: {
+		openSubTasksFunc() {
+			if (!this.openSubTasks) {
+				this.openSubTasks = true;
+				this.showSubTasks = true;
+			} else {
+				this.openSubTasks = false;
+				setTimeout(() => {
+					this.showSubTasks = false;
+				}, 510);
+			}
+		},
 		changeState() {
 			const element = document.querySelector(
 				`input#checkboxInput${this.id}`
@@ -102,7 +114,7 @@ export default Vue.extend({
 		deleteTask() {
 			const localTasks: Task[] = sm.get('tasks');
 			localTasks.splice(this.id, 1);
-			sm.set('tasks', localTasks, ['taskList', 'taskState']);
+			sm.set('tasks', localTasks, [`subTaskList-${this.id}`, 'taskList', 'taskState']);
 		},
 	},
 });
