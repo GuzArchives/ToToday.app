@@ -34,17 +34,13 @@ export default Vue.extend({
 	},
 	data() {
 		return {
-			subTaskList: sm.get('tasks')[this.parent].subTasks
-				? sm.get('tasks')[this.parent].subTasks
-				: [],
+			subTaskList: sm.get(`tasks[${this.parent}].subTasks`) || [],
 			preventAnim: true,
 		};
 	},
 	mounted() {
 		window.addEventListener(`storageUpdated-subTaskList-${this.parent}`, () => {
-			this.subTaskList = sm.get('tasks')[this.parent].subTasks
-				? sm.get('tasks')[this.parent].subTasks
-				: [];
+			this.subTaskList = sm.get(`tasks[${this.parent}].subTasks`) || [];
 		});
 		setTimeout(() => {
 			this.preventAnim = false;

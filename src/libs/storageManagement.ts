@@ -1,6 +1,10 @@
+import get from 'lodash-es/get';
+import set from 'lodash-es/set';
+
 import appInfo from '~~/package.json';
 import date from '~/libs/date';
-import obj from '~/libs/utils';
+
+const obj = {set, get};
 
 const storageIndex = 'ToToday-storage';
 
@@ -15,14 +19,16 @@ const sm = {
 	 * @param {string | string[] | undefined} event Event or list of events types/names to be dispatched;
 	 */
 	add: (path: string, value: any, event?: string | string[]): void => {
-		let data = sm.getJSON().data;
+		let storage = sm.getJSON();
 
-		if (obj.getByString(data, `data.${path}`))
+		path = `data.${path}`;
+
+		if (obj.get(storage, path))
 			return window.alert('ERROR: Value already in storage');
 
-		data = obj.setByString(data, value, path);
+		storage = obj.set(storage, path, value);
 
-		sm.setJSON(data, event);
+		sm.setJSON(storage, event);
 	},
 
 	/**
@@ -30,79 +36,52 @@ const sm = {
 	 * @param {string} path Value's path on `data`;
 	 * @param {any} value The new value to replace;
 	 * @param {string | string[] | undefined} event Event or list of events types/names to be dispatched;
-	 * @param {boolean | undefined} getOld Return the old value of the path?
-	 * @param {boolean | undefined} meta Update a value on `meta`?
 	 *
 	 * @returns The old value of the path, if `getOld` is `true`.
 	 */
-	set: (
-		path: string,
-		value: any,
-		event?: string | string[],
-		getOld?: boolean,
-		meta?: boolean
-	): void | any => {
-		if (meta) {
-			let metaData = sm.getJSON();
-			metaData = obj.setByString(metaData, undefined, path);
-			sm.setJSON(metaData, 'meta', true);
-			return;
-		}
+	set: (path: string, value: any, event?: string | string[]): void => {
+		let storage = sm.getJSON();
 
-		let data = sm.getJSON().data;
+		if (!obj.get(storage, `data.${path}`) && !path.startsWith('!'))
+			return sm.add(path, value, event);
 
-		if (obj.getByString(data, path)) return sm.add(path, value, event);
+		path = path.startsWith('!') ? `meta.${path.substring(1)}` : `data.${path}`;
 
-		const oldValue = obj.getByString(data, path);
+		storage = obj.set(storage, path, value);
 
-		data = obj.setByString(data, value, path);
-
-		sm.setJSON(data, event);
-
-		if (getOld) return oldValue;
+		sm.setJSON(storage, event);
 	},
 
 	/**
 	 * Gets a value from localStorage*.
-	 * @param {string} path Value's path on `data`;
-	 * @param {boolean | undefined} meta Update a value on `meta`?
+	 * @param {string | undefined} path Value's path on `data`;
 	 *
 	 * @returns {any | undefined} Value on localStorage (or undefined if no value wasn't found).
 	 */
-	get: (path: string, meta?: boolean): any | undefined => {
+	get: (path?: string): any | undefined => {
 		const storage = sm.getJSON();
 
-		if (meta && path) return obj.getByString(storage, `meta.${path}`);
-		else if (meta) return storage.meta;
+		if (!path) return storage.data;
+		else if (path === '!') return storage.meta;
 
-		if (path && obj.getByString(storage, `data.${path}`) !== undefined)
-			return obj.getByString(storage, `data.${path}`);
+		path = path.startsWith('!') ? `meta.${path.substring(1)}` : `data.${path}`;
 
-		return undefined;
+		return obj.get(storage, path);
 	},
 
 	/**
 	 * Removes a value from localStorage's data
 	 * @param {string} path Value's path on `data`;
 	 * @param {string | string[] | undefined} event Event or list of events types/names to be dispatched;
-	 * @param {boolean | undefined} getOld Return the old value of the path?
 	 *
 	 * @returns The old value of the path, if `getOld` is `true`.
 	 */
-	remove: (
-		path: string,
-		event?: string | string[],
-		getOld?: boolean
-	): void | any => {
-		let data = sm.getJSON().data;
+	remove: (path: string, event?: string | string[]): void | any => {
+		let storage = sm.getJSON();
 
-		const oldValue = obj.getByString(data, path);
+		storage = obj.set(storage, `data.${path}`, undefined);
 
-		data = obj.setByString(data, undefined, path);
-
-		sm.setJSON(data, event);
-
-		if (getOld) return oldValue;
+		sm.setJSON(storage, event);
 	},
 
 	/**
@@ -125,45 +104,39 @@ const sm = {
 
 	/**
 	 * Sets a new `data` on the local storage JSON file *(also updates the `date.updated` meta-information)*.
-	 * @param {DataInfo | object} newData New data object to be updated/set;
+	 * @param {StorageSchema} newData New data object to be updated/set;
 	 * @param {string | string[]} event Event or list of events types/names to be dispatched;
 	 * @param {boolean} meta Do new data parameters contain `meta` information?
 	 *
 	 * **Used internally by the storage management.**
 	 */
 	setJSON: (
-		newData: DataInfo | object,
+		newData: StorageSchema,
 		event?: string | string[],
-		meta?: boolean
 	) => {
-		if (meta) localStorage.setItem(storageIndex, JSON.stringify(newData));
-		else {
-			const newJSON: StorageSchema = { meta: sm.getJSON().meta, data: newData };
+		localStorage.setItem(storageIndex, JSON.stringify(newData));
 
-			localStorage.setItem(storageIndex, JSON.stringify(newJSON));
+		const updatedMeta = sm.getJSON().meta;
 
-			const updatedMeta = sm.getJSON().meta;
+		updatedMeta.date.updated = date.full();
 
-			updatedMeta.date.updated = date.full();
+		const updatedJSON: StorageSchema = {
+			meta: updatedMeta,
+			data: newData.data,
+		};
 
-			const updatedJSON: StorageSchema = {
-				meta: updatedMeta,
-				data: newData,
-			};
+		localStorage.setItem(storageIndex, JSON.stringify(updatedJSON));
 
-			localStorage.setItem(storageIndex, JSON.stringify(updatedJSON));
-
-			if (event || event !== '') {
-				if (event instanceof Array) {
-					for (const e of event) {
-						window.dispatchEvent(new CustomEvent(`storageUpdated-${e}`));
-					}
-				} else {
-					window.dispatchEvent(new CustomEvent(`storageUpdated-${event}`));
+		if (event || event !== '') {
+			if (event instanceof Array) {
+				for (const e of event) {
+					window.dispatchEvent(new CustomEvent(`storageUpdated-${e}`));
 				}
 			} else {
-				window.dispatchEvent(new CustomEvent('storageUpdated'));
+				window.dispatchEvent(new CustomEvent(`storageUpdated-${event}`));
 			}
+		} else {
+			window.dispatchEvent(new CustomEvent('storageUpdated'));
 		}
 		window.dispatchEvent(new CustomEvent('storageUpdated-meta'));
 	},
@@ -216,11 +189,16 @@ const sm = {
 					created: date.full(),
 					updated: date.full(),
 				},
+
+				lastOpen: {
+					version: appInfo.version,
+					date: date.full(),
+				},
 			},
 			data: {},
 		};
 
-		sm.setJSON(storage, 'meta', true);
+		sm.setJSON(storage, 'meta');
 	},
 };
 

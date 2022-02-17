@@ -103,18 +103,18 @@ export default Vue.extend({
 			const element = document.querySelector(
 				`input#checkboxInput${this.id}`
 			) as HTMLInputElement;
-			const tasks: Task[] = sm.get('tasks');
+			const task: Task = sm.get(`tasks[${this.id}]`);
 
-			tasks[this.id].checked = element?.checked;
+			task.checked = element?.checked;
 
 			this.openSubTasks = false;
 
-			sm.set('tasks', tasks, ['taskList', 'taskState']);
+			sm.set(`tasks[${this.id}]`, task, ['taskList', 'taskState']);
 		},
 		deleteTask() {
-			const localTasks: Task[] = sm.get('tasks');
-			localTasks.splice(this.id, 1);
-			sm.set('tasks', localTasks, [`subTaskList-${this.id}`, 'taskList', 'taskState']);
+			const tasks: Task[] = sm.get('tasks');
+			tasks.splice(this.id, 1);
+			sm.set('tasks', tasks, [`subTaskList-${this.id}`, 'taskList', 'progressNumber']);
 		},
 	},
 });

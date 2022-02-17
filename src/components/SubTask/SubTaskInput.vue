@@ -63,20 +63,18 @@ export default Vue.extend({
 				return;
 			}
 
-			const subTaskItem: SubTask = {
+			const subTasks: SubTask[] = sm.get(`tasks[${parentId}].subTasks`) || [];
+
+			subTasks.push({
 				description: newTitle,
 				checked: false,
-			};
+			});
 
-			const localTasks: Task[] = sm.get('tasks');
-			const parentTask = localTasks[parentId];
-
-			if (!parentTask.subTasks) parentTask.subTasks = [];
-
-			parentTask.subTasks.push(subTaskItem);
-			localTasks[parentId] = parentTask;
-
-			sm.set('tasks', localTasks, `subTaskList-${parentId}`);
+			sm.set(
+				`tasks[${parentId}].subTasks`,
+				subTasks,
+				[`subTaskList-${parentId}`, 'progressNumber']
+			);
 
 			(
 				document.querySelector(
