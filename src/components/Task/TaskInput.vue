@@ -69,20 +69,18 @@ export default Vue.extend({
 				return;
 			}
 
-			const taskItem: Task = {
+			const localTasks: Task[] = sm.get('tasks');
+
+			localTasks.push({
 				title: newTitle,
 				description: newDescription || '',
 				checked: false,
 				newTask: true,
 				autoCheck: true,
 				subTasks: [],
-			};
+			});
 
-			const localTasks: Task[] = sm.get('tasks');
-
-			localTasks.push(taskItem);
-
-			sm.set('tasks', localTasks, 'taskList');
+			sm.set('tasks', localTasks, ['taskList', 'progressNumber']);
 
 			(
 				document.querySelector('input#newTaskInputName') as HTMLInputElement

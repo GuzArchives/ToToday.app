@@ -49,18 +49,27 @@ export default Vue.extend({
 				`input#subTaskCheckboxInput${this.id}-p${this.parent}`
 			) as HTMLInputElement;
 
-			const localTasks: Task[] = sm.get('tasks');
+			const subTask: SubTask = sm.get(
+				`tasks[${parentId}].subTasks[${this.id}]`
+			);
 
-			localTasks[parentId].subTasks[this.id].checked = element.checked;
+			subTask.checked = element.checked;
 
-			sm.set('tasks', localTasks, [`subTaskList-${parentId}`, 'subTaskState']);
+			sm.set(`tasks[${parentId}].subTasks[${this.id}]`, subTask, [
+				`subTaskList-${parentId}`,
+				'subTaskState',
+			]);
 		},
 		deleteSubTask(parentId: number) {
-			const localTasks: Task[] = sm.get('tasks');
+			const subTaskList: SubTask[] = sm.get(`tasks[${parentId}].subTasks`);
 
-			localTasks[parentId].subTasks.splice(this.id, 1);
+			subTaskList.splice(this.id, 1);
 
-			sm.set('tasks', localTasks, [`subTaskList-${parentId}`, 'subTaskState']);
+			sm.set(`tasks[${parentId}].subTasks`, subTaskList, [
+				`subTaskList-${parentId}`,
+				'subTaskState',
+				'progressNumber',
+			]);
 		},
 	},
 });

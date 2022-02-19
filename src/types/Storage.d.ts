@@ -24,6 +24,10 @@ type MetaInfo = {
 		created: DateInfo;
 		updated: DateInfo;
 	};
+	lastOpen?: {
+		version: `${number}.${number}.${number}` | string;
+		date: DateInfo;
+	};
 };
 
 type DataInfo = {

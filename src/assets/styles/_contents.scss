@@ -1,0 +1,110 @@
+@import '~assets/styles/_variables.scss';
+@import '~assets/styles/_mixins.scss';
+@import '~assets/styles/_colors.scss';
+
+.changeLogContent.nuxt-content {
+	padding: 0 40px 20px 40px;
+
+	* {
+		transition: all 0.3s;
+		text-align: justify;
+	}
+
+	h1 {
+		.light-mode & {
+			color: $sky4;
+		}
+		.dark-mode & {
+			color: $checked-color;
+		}
+		text-align: center;
+	}
+
+	h3,
+	h4 {
+		text-align: left;
+
+		.light-mode & {
+			&#new-features {
+				color: $green3;
+			}
+
+			&#bug-fixes {
+				color: $begonia-red1;
+			}
+
+			&#enhancements {
+				color: $lavender3;
+			}
+		}
+
+		.dark-mode & {
+			&#new-features {
+				color: $green0;
+			}
+
+			&#bug-fixes {
+				color: $begonia-red0;
+			}
+
+			&#enhancements {
+				color: $lavender0;
+			}
+		}
+	}
+
+	ul {
+		padding-left: 10px;
+	}
+
+	details {
+		h3,
+		h4,
+		ul {
+			margin: 0.5em 0;
+		}
+		h3,
+		h4 {
+			margin-top: 1em;
+		}
+
+		summary {
+			text-align: left;
+			opacity: 0.5;
+			&:hover {
+				opacity: 1;
+			}
+			font-size: 12px;
+
+			outline: 0;
+
+			cursor: pointer;
+		}
+	}
+
+	.comment {
+		opacity: 0.5;
+	}
+
+	.links a {
+		&::before {
+			content: '• ';
+			color: $blue3;
+		}
+		&:first-of-type::before {
+			content: '';
+		}
+
+		font-size: 1em;
+		text-decoration: none;
+		color: $blue3;
+		&:hover {
+			.light-mode & {
+				color: $blue2;
+			}
+			.dark-mode & {
+				color: $blue0;
+			}
+		}
+	}
+}
