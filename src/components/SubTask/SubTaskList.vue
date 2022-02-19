@@ -52,40 +52,16 @@ export default Vue.extend({
 <style lang="scss">
 @import '~assets/styles/_variables.scss';
 @import '~assets/styles/_mixins.scss';
+@import '~assets/styles/_animations.scss';
 
 .opened {
 	transform: translateY(-80px) scaleY(0.1);
 	animation: open 0.5s forwards;
-	@keyframes open {
-		from {
-			transform: translateY(-80px) scaleY(0.1);
-			opacity: 0;
-			position: absolute;
-		}
-		to {
-			transform: translateY(-20px) scaleY(1);
-			opacity: 1;
-			position: relative;
-		}
-	}
 }
 
 .closed {
 	transform: translateY(-20px) scaleY(1);
 	animation: close 0.5s forwards;
-	@keyframes close {
-		from {
-			transform: translateY(-20px) scaleY(1);
-			opacity: 1;
-			position: relative;
-		}
-		to {
-			transform: translateY(-80px) scaleY(0.1);
-			display: none;
-			opacity: 0;
-			position: absolute;
-		}
-	}
 }
 
 .subTasks {
