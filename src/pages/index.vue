@@ -11,7 +11,7 @@
 			</div>
 			<PageFooter />
 		</main>
-		<PopUp v-if="true">
+		<PopUp v-if="newUpdate">
 			<MarkDown file-path="changeLog" classes="changeLogContent" />
 		</PopUp>
 	</div>
