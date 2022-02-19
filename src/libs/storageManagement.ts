@@ -4,7 +4,7 @@ import set from 'lodash-es/set';
 import appInfo from '~~/package.json';
 import date from '~/libs/date';
 
-const obj = {set, get};
+const obj = { set, get };
 
 const storageIndex = 'ToToday-storage';
 
@@ -13,7 +13,7 @@ const storageIndex = 'ToToday-storage';
  */
 const sm = {
 	/**
-	 * Adds new value on `data`. *Don't create or rewrite the value if it already exists.*
+	 * Adds new value on `data`. *Returns error if the value already exists.*
 	 * @param {string} path New value's path on `data`;
 	 * @param {any} value New value;
 	 * @param {string | string[] | undefined} event Event or list of events types/names to be dispatched;
@@ -24,7 +24,7 @@ const sm = {
 		path = `data.${path}`;
 
 		if (obj.get(storage, path))
-			return window.alert('ERROR: Value already in storage');
+			throw new Error('The value already exists on the storage');
 
 		storage = obj.set(storage, path, value);
 
@@ -33,7 +33,7 @@ const sm = {
 
 	/**
 	 * Rewrite a value inside of `data` with a new *(creates a new path/value if it's doesn't exist before)*.
-	 * @param {string} path Value's path on `data`;
+	 * @param {string} path Value's path on `data`; (start with `!` to access a value on `meta`)
 	 * @param {any} value The new value to replace;
 	 * @param {string | string[] | undefined} event Event or list of events types/names to be dispatched;
 	 *
@@ -54,8 +54,7 @@ const sm = {
 
 	/**
 	 * Gets a value from localStorage*.
-	 * @param {string | undefined} path Value's path on `data`;
-	 *
+	 * @param {string | undefined} path Value's path on `data`; (start with `!` to access a value on `meta`)
 	 * @returns {any | undefined} Value on localStorage (or undefined if no value wasn't found).
 	 */
 	get: (path?: string): any | undefined => {
@@ -71,12 +70,10 @@ const sm = {
 
 	/**
 	 * Removes a value from localStorage's data
-	 * @param {string} path Value's path on `data`;
+	 * @param {string} path Value's path on `data`; (start with `!` to access a value on `meta`)
 	 * @param {string | string[] | undefined} event Event or list of events types/names to be dispatched;
-	 *
-	 * @returns The old value of the path, if `getOld` is `true`.
 	 */
-	remove: (path: string, event?: string | string[]): void | any => {
+	remove: (path: string, event?: string | string[]): void => {
 		let storage = sm.getJSON();
 
 		storage = obj.set(storage, `data.${path}`, undefined);
@@ -85,9 +82,9 @@ const sm = {
 	},
 
 	/**
-	 * Returns the size of the localStorage in KB
+	 * @returns Size of the localStorage in KB
 	 */
-	getSize: () => {
+	getSize: (): number => {
 		const size = new TextEncoder().encode(JSON.stringify(sm.getJSON())).length;
 		return size / 1024;
 	},
@@ -106,14 +103,10 @@ const sm = {
 	 * Sets a new `data` on the local storage JSON file *(also updates the `date.updated` meta-information)*.
 	 * @param {StorageSchema} newData New data object to be updated/set;
 	 * @param {string | string[]} event Event or list of events types/names to be dispatched;
-	 * @param {boolean} meta Do new data parameters contain `meta` information?
 	 *
 	 * **Used internally by the storage management.**
 	 */
-	setJSON: (
-		newData: StorageSchema,
-		event?: string | string[],
-	) => {
+	setJSON: (newData: StorageSchema, event?: string | string[]) => {
 		localStorage.setItem(storageIndex, JSON.stringify(newData));
 
 		const updatedMeta = sm.getJSON().meta;
