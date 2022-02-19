@@ -77,6 +77,8 @@ export default {
 		'@nuxtjs/color-mode',
 
 		'@nuxtjs/pwa',
+
+		'@nuxt/content',
 	],
 
 	// Modules: https://go.nuxtjs.dev/config-modules
