@@ -41,9 +41,9 @@ export default Vue.extend({
 		return {
 			version: appInfo.version,
 			storage_updated: sm.get('!date.updated')
-				? `${sm.get('!date.updated.day.readable')} ${
-						sm.get('!date.updated.hour.readable')
-				  }`
+				? `${sm.get('!date.updated.day.readable')} ${sm.get(
+						'!date.updated.hour.readable'
+				  )}`
 				: '',
 			storage_size: `${sm.getSize().toFixed(2)}Kb`,
 		};
@@ -51,9 +51,9 @@ export default Vue.extend({
 	mounted() {
 		window.addEventListener('storageUpdated-meta', () => {
 			this.storage_updated = sm.get('!date.updated')
-				? `${sm.get('!date.updated.day.readable')} ${
-						sm.get('!date.updated.hour.readable')
-				  }`
+				? `${sm.get('!date.updated.day.readable')} ${sm.get(
+						'!date.updated.hour.readable'
+				  )}`
 				: '';
 			this.storage_size = `${sm.getSize().toFixed(2)}Kb`;
 		});

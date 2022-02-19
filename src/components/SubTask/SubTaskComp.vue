@@ -65,7 +65,11 @@ export default Vue.extend({
 
 			subTaskList.splice(this.id, 1);
 
-			sm.set(`tasks[${parentId}].subTasks`, subTaskList, [`subTaskList-${parentId}`, 'subTaskState', 'progressNumber']);
+			sm.set(`tasks[${parentId}].subTasks`, subTaskList, [
+				`subTaskList-${parentId}`,
+				'subTaskState',
+				'progressNumber',
+			]);
 		},
 	},
 });

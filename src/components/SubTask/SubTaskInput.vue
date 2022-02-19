@@ -70,11 +70,10 @@ export default Vue.extend({
 				checked: false,
 			});
 
-			sm.set(
-				`tasks[${parentId}].subTasks`,
-				subTasks,
-				[`subTaskList-${parentId}`, 'progressNumber']
-			);
+			sm.set(`tasks[${parentId}].subTasks`, subTasks, [
+				`subTaskList-${parentId}`,
+				'progressNumber',
+			]);
 
 			(
 				document.querySelector(

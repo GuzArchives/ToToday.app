@@ -114,7 +114,11 @@ export default Vue.extend({
 		deleteTask() {
 			const tasks: Task[] = sm.get('tasks');
 			tasks.splice(this.id, 1);
-			sm.set('tasks', tasks, [`subTaskList-${this.id}`, 'taskList', 'progressNumber']);
+			sm.set('tasks', tasks, [
+				`subTaskList-${this.id}`,
+				'taskList',
+				'progressNumber',
+			]);
 		},
 	},
 });
